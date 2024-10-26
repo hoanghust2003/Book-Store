@@ -7,7 +7,7 @@ const Home = () => {
     <>
         <Banner/>
         <TopSellers/>
-        
+        <Recommened/>
         
     </>
   )
