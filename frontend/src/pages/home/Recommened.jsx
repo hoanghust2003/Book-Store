@@ -10,7 +10,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
 
-const Recommended = () => {
+const Recommened = () => {
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
@@ -59,4 +59,4 @@ const Recommended = () => {
   );
 };
 
-export default Recommended;
+export default Recommened;
