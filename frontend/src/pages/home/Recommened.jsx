@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+
+
 
 
 // Import Swiper React components
@@ -13,7 +15,6 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useEffect } from 'react';
 import BookCard from '../books/BookCard';
-
 
 
 const Recommened = () => {
