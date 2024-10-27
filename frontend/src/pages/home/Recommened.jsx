@@ -1,14 +1,21 @@
 import React, { useState,useEffect } from 'react';
 
 
+
+
+// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+// import required modules
 import { Pagination, Navigation } from 'swiper/modules';
 
+// Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useEffect } from 'react';
 import BookCard from '../books/BookCard';
+
 
 const Recommened = () => {
   const [books, setBooks] = useState([]);
@@ -21,7 +28,7 @@ const Recommened = () => {
 
   return (
     <div className='py-16'>
-      <h2 className="text-3xl font-semibold mb-6">Recommended for you</h2>
+      <h2 className="text-3xl font-semibold mb-6">Recommened for you</h2>
     
         <Swiper
         slidesPerView={1}
@@ -50,13 +57,20 @@ const Recommened = () => {
         >
         {books.length > 0 && books.slice(8,18).map((book, index) => (
             <SwiperSlide key={index}>
-            <BookCard book={book} />
+              <BookCard book={book} />
             </SwiperSlide>
         ))}
         </Swiper>
 
     </div>
   );
+  
 };
-
+/*
+const Recommened = () =>{
+  return(
+    <div>Recommened</div>
+  )
+}
+*/
 export default Recommened;
