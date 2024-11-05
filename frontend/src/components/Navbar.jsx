@@ -5,6 +5,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { HiOutlineUser } from "react-icons/hi";
 import { HiOutlineHeart } from "react-icons/hi2";
 import { HiOutlineShoppingCart } from "react-icons/hi";
+import DarkModeSwitch from "./DarkModeSwitch"; 
 
 import avatarImg from "../assets/avatar.png";
 import { useState } from "react";
@@ -44,6 +45,9 @@ const Navbar = () => {
 
         {/*right side*/}
         <div className="relative flex items-center md:space-x-3 space-x-2">
+          <div>
+            <DarkModeSwitch/>
+          </div>
           <div>
             {currentUser ? (
               <>

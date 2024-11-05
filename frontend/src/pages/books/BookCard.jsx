@@ -11,7 +11,7 @@ const BookCard = ({book}) => {
     dispatch(addToCart(product))
   }
   return (
-    <div className=" rounded-lg transition-shadow duration-300">
+    <div className=" rounded-lg transition-shadow duration-300 bg-white dark:bg-gray-800 text-black dark:text-white">
       <div className="flex flex-col sm:flex-row sm:items-center sm:h-72  sm:justify-center gap-4">
         <div className="sm:h-72 sm:flex-shrink-0 border rounded-md">
           <Link to={`/books/${book._id}`}>
@@ -25,11 +25,11 @@ const BookCard = ({book}) => {
 
         <div>
           <Link to={`/books/${book._id}`}>
-            <h3 className="text-xl font-semibold hover:text-blue-600 mb-3">
+            <h3 className="text-xl font-semibold hover:text-blue-600 dark:hover:text-blue-400 mb-3">
               {book?.title}
             </h3>
           </Link>
-          <p className="text-gray-600 mb-5">{book?.description.length > 80 ? `${book.description
+          <p className="text-gray-600 dark:text-gray-300 mb-5">{book?.description.length > 80 ? `${book.description
             .slice(0, 80)}...` : book?.description
           }</p>
           <p className="font-medium mb-5">

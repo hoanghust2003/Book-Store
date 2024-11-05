@@ -52,7 +52,7 @@ const news = [
 
 const News = () => {
   return (
-    <div className="py-16">
+    <div className="py-16 bg-white dark:bg-gray-900 text-black dark:text-white">
       <h2 className="text-3xl font-semibold mb-6">News</h2>
 
       <Swiper
@@ -78,7 +78,7 @@ const News = () => {
       >
         {news.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-12">
+            <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-12 bg-white dark:bg-gray-800 text-black dark:text-white p-4 rounded-md">
               {/* content */}
               <div className="py-4">
                 <Link to="/">
@@ -87,7 +87,7 @@ const News = () => {
                   </h3>
                 </Link>
                 <div className="w-12 h-[4px] bg-primary mb-5"></div>
-                <p className="text-sm text-gray-600">{item.description}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{item.description}</p>
               </div>
 
               <div className="flex-shrink-0">

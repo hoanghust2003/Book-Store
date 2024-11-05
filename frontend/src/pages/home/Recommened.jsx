@@ -27,7 +27,7 @@ const Recommened = () => {
   }, []);
 
   return (
-    <div className='py-16'>
+    <div className='py-16 bg-white dark:bg-gray-900 text-black dark:text-white'>
       <h2 className="text-3xl font-semibold mb-6">Recommened for you</h2>
     
         <Swiper
