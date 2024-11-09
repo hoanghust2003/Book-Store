@@ -7,7 +7,7 @@ const createAOrder = async (req, res) => {
     res.status(200).json(savedOrder);
   } catch (error) {
     console.error("Error creating order", error);
-    
+    res.status(500).json({ message: "Failed to create order" });
   }
 };
 
@@ -21,7 +21,7 @@ const getOrderByEmail = async (req, res) => {
     res.status(200).json(orders);
   } catch (error) {
     console.error("Error fetching orders", error);
-    
+    res.status(500).json({ message: "Failed to fetch order" });
   }
 }
 
