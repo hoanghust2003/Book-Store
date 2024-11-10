@@ -7,6 +7,7 @@ import CartPage from "../pages/books/CartPage";
 import CheckoutPage from "../pages/books/CheckoutPage";
 import AdminRoute from "../routers/AdminRoute"
 import AdminLogin from "../components/AdminLogin"
+import SingleBook from "../pages/books/SingleBook";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckoutPage/>
+      },
+      {
+        path: "/books/:id",
+        element: <SingleBook/>
       },
       {
         path: "/admin",
