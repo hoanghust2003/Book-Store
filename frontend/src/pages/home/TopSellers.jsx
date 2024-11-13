@@ -28,14 +28,14 @@ const TopSellers = () => {
   )
 
   return (
-    <div className='py-10'>
+    <div className='py-10 bg-white dark:bg-gray-900 text-black dark:text-white' >
       <h2 className='text-3xl font-semibold mb-6'>Top Sellers</h2>
       {/*ccategory */}
       <div className='mb-8 flex items-center'>
         <select 
         onChange={(e) => setSelectedCategory(e.target.value)}
-        name="category" id="category" className='border bg-[#EAEAEA]
-        border-gray-300 rounded-md px-4 py-2 focus:outline-none'>
+        name="category" id="category" className='border
+        border-gray-300 rounded-md px-4 py-2 focus:outline-none bg-white dark:bg-gray-900 text-black dark:text-white'>
           {
             categories.map((category,index) => (
               <option key={index} value={category}>{category}</option>

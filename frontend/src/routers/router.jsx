@@ -7,11 +7,15 @@ import CartPage from "../pages/books/CartPage";
 import CheckoutPage from "../pages/books/CheckoutPage";
 import AdminRoute from "../routers/AdminRoute"
 import AdminLogin from "../components/AdminLogin"
+
 import DashboardLayout from "../pages/dashboard/DashboardLayout"
 import Dashboard from "../pages/dashboard/Dashboard";
 import ManageBooks from "../pages/dashboard/manageBooks/ManageBooks";
 import AddBook from "../pages/dashboard/addBook/AddBook";
 import UpdateBook from "../pages/dashboard/EditBook/UpdateBook";
+
+import SingleBook from "../pages/books/SingleBook";
+
 
 const router = createBrowserRouter([
   {
@@ -45,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckoutPage/>
+      },
+      {
+        path: "/books/:id",
+        element: <SingleBook/>
       },
       {
         path: "/admin",
