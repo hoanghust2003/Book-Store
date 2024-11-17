@@ -24,8 +24,5 @@ ToolButton.propTypes = {
   onClick: PropTypes.func.isRequired,
 };
 
-ToolButton.defaultProps = {
-  isActive: false,
-};
 
 export default ToolButton;

@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
-import { FaStar } from 'react-icons/fa6';
+import { FaRegStar,FaStar } from 'react-icons/fa6';
 import { useParams } from 'react-router-dom';
 import { Button } from '@nextui-org/react';
 import RichEditor from '../../components/richeditor';
+import toast from "react-hot-toast";
 import '../../App.css';
 import '../../index.css'
+
+const client = {
+  post: async (url, data) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ data: "success" });
+      }, 1000);
+    });
+  },
+};
 
 const ReviewForm = () => {
   const { bookId } = useParams();
   const [content, setContent] = useState("")
   const [selectedRatings, setSelectedRatings] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const updateRatingChanges = (rating) => {
     const newRatings = Array(5).fill("");
@@ -23,15 +35,16 @@ const ReviewForm = () => {
     evt.preventDefault();
 
     if (!selectedRatings.length)
-      return toast.error("Please select some rating!");
+     return toast.error("Please select some rating!");
 
     try {
       setLoading(true);
-      await client.post("/review", {
-        bookId,
-        rating: selectedRatings.length,
-        content,
-      });
+      // await client.post("/review", {
+      //   bookId,
+      //   rating: selectedRatings.length,
+      //   content,
+      // });
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       toast.success("Thanks for leaving a rating.");
     } catch (error) {
@@ -56,10 +69,11 @@ const ReviewForm = () => {
             key={index}
             onClick={() => updateRatingChanges(index + 1)}
           >
-            <FaStar
-              size={24}
-              className={`star-icon ${selectedRatings[index] === "selected" ? "selected" : ""}`}
-            />
+            {selectedRatings[index] === "selected" ? (
+              <FaStar size={24} />
+            ) : (
+              <FaRegStar size={24} />
+            )}
           </Button>
         );
       })}
@@ -69,7 +83,7 @@ const ReviewForm = () => {
 
       {/* Submit Button */}
       <Button type="submit"
-      className="submit-review-btn"
+      className="btn-primary"
       >Submit Review</Button>
     </form>
   );
