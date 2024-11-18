@@ -2,202 +2,202 @@
     {
       "_id": 1,
       "title": "How to Grow Your Online Store",
-      "description": "Learn the best strategies to grow your online store in today's competitive market.",
+      "description": "Tìm hiểu những chiến lược tốt nhất để phát triển cửa hàng trực tuyến của bạn trong thị trường cạnh tranh ngày nay.",
       "category": "business",
       "trending": true,
       "coverImage": "book-1.png",
-      "oldPrice": 29.99,
-      "newPrice": 19.99
+      "oldPrice": "750.000",
+      "newPrice": "510.000"
     },
     {
       "_id": 2,
       "title": "Top 10 Fiction Books This Year",
-      "description": "A curated list of the best fiction books that are trending this year.",
+      "description": "Danh sách tuyển chọn những cuốn sách hư cấu hay nhất đang là xu hướng trong năm nay.",
       "category": "books",
       "trending": true,
       "coverImage": "book-2.png",
-      "oldPrice": 24.99,
-      "newPrice": 14.99
+      "oldPrice": "625.000",
+      "newPrice": "375.000"
     },
     {
       "_id": 3,
       "title": "Mastering SEO in 2024",
-      "description": "Tips and tricks to boost your SEO and rank higher on search engines.",
+      "description": "Mẹo và thủ thuật để tăng cường SEO và xếp hạng cao hơn trên công cụ tìm kiếm.",
       "category": "marketing",
       "trending": true,
       "coverImage": "book-3.png",
-      "oldPrice": 39.99,
-      "newPrice": 29.99
+      "oldPrice": "900.000",
+      "newPrice": "750.000"
     },
     {
       "_id": 4,
       "title": "Best eCommerce Platforms",
-      "description": "A comprehensive guide on choosing the best eCommerce platforms for 2024.",
+      "description": "Hướng dẫn toàn diện về cách lựa chọn nền tảng thương mại điện tử tốt nhất cho năm 2024.",
       "category": "business",
       "trending": false,
       "coverImage": "book-4.png",
-      "oldPrice": 49.99,
-      "newPrice": 39.99
+      "oldPrice": "700.000",
+      "newPrice": "350.000"
     },
     {
       "_id": 5,
       "title": "Non-Fiction Reads You Must Try",
-      "description": "Our top picks for non-fiction books to add to your reading list.",
+      "description": "Những lựa chọn hàng đầu của chúng tôi về sách phi hư cấu để bạn thêm vào danh sách đọc của mình.",
       "category": "books",
       "trending": true,
       "coverImage": "book-5.png",
-      "oldPrice": 19.99,
-      "newPrice": 9.99
+      "oldPrice": "510.000",
+      "newPrice": "255.000"
     },
     {
       "_id": 6,
       "title": "Ultimate Guide to Digital Marketing",
-      "description": "A complete guide to digital marketing strategies for 2024.",
+      "description": "Hướng dẫn đầy đủ về các chiến lược tiếp thị kỹ thuật số cho năm 2024.",
       "category": "marketing",
       "trending": false,
       "coverImage": "book-6.png",
-      "oldPrice": 44.99,
-      "newPrice": 34.99
+      "oldPrice": "880.000",
+      "newPrice": "560.000"
     },
     {
       "_id": 7,
       "title": "The First Days",
-      "description": "Katie is driving to work one beautiful day when a dead man jumps into her car and tries to eat her.  That same morning, Jenni opens a bedroom door to find her husband devouring their toddler son. ",
+      "description": "Katie đang lái xe đi làm vào một ngày đẹp trời thì một người đàn ông đã chết nhảy vào xe cô và cố gắng ăn thịt cô. Cùng sáng hôm đó, Jenni mở cửa phòng ngủ và thấy chồng mình đang ăn thịt đứa con trai mới biết đi của họ. ",
       "category": "horror",
       "trending": true,
       "coverImage": "book-7.png",
-      "oldPrice": 59.99,
-      "newPrice": 49.99
+      "oldPrice": "400.000",
+      "newPrice": "250.000"
     },
     {
       "_id": 8,
       "title": "The Hunger Games",
-      "description": "Could you survive on your own in the wild, with every one out to make sure you don't live to see the morning?",
+      "description": "Bạn có thể tự mình sống sót trong tự nhiên, khi mọi người đều tìm cách đảm bảo rằng bạn không sống sót đến bình minh không?",
       "category": "fiction",
       "trending": true,
       "coverImage": "book-8.png",
-      "oldPrice": 21.99,
-      "newPrice": 16.99
+      "oldPrice": "550.000",
+      "newPrice": "425.000"
     },
     {
       "_id": 9,
       "title": "Harry Potter and the Order of the Phoenix",
-      "description": "Harry Potter is about to start his fifth year at Hogwarts School of Witchcraft and Wizardry. Unlike most schoolboys, Harry never enjoys his summer holidays",
+      "description": "Harry Potter sắp bắt đầu năm thứ năm tại Trường Phù thủy và Pháp sư Hogwarts. Không giống như hầu hết các cậu học sinh khác, Harry không bao giờ tận hưởng kỳ nghỉ hè của mình",
       "category": "adventure",
       "trending": false,
       "coverImage": "book-9.png",
-      "oldPrice": 27.99,
-      "newPrice": 18.99
+      "oldPrice": "710.000",
+      "newPrice": "482.000"
     },
     {
       "_id": 10,
       "title": "Pride and Prejudice",
-      "description": "The romantic clash between the opinionated Elizabeth and her proud beau, Mr. Darcy, is a splendid performance of civilized sparring.",
+      "description": "Cuộc đụng độ lãng mạn giữa Elizabeth bướng bỉnh và người bạn trai kiêu hãnh của cô, ngài Darcy, là một màn trình diễn tuyệt vời của cuộc đấu trí văn minh.",
       "category": "fiction",
       "trending": true,
       "coverImage": "book-10.png",
-      "oldPrice": 14.99,
-      "newPrice": 10.99
+      "oldPrice": "385.000",
+      "newPrice": "275.000"
     },
     {
       "_id": 11,
       "title": "To Kill a Mockingbird",
-      "description": "The unforgettable novel of a childhood in a sleepy Southern town and the crisis of conscience that rocked it. 'To Kill A Mockingbird' became both an instant bestseller",
+      "description": "Cuốn tiểu thuyết khó quên về tuổi thơ ở một thị trấn buồn ngủ miền Nam và cuộc khủng hoảng lương tâm đã làm rung chuyển nó. 'Giết con chim nhại' trở thành cuốn sách bán chạy nhất ngay lập tức",
       "category": "fiction",
       "trending": true,
       "coverImage": "book-11.png",
-      "oldPrice": 32.99,
-      "newPrice": 25.99
+      "oldPrice": "825.000",
+      "newPrice": "650.000"
     },
     {
       "_id": 12,
       "title": "The Fault in Our Stars",
-      "description": "Despite the tumor-shrinking medical miracle that has bought her a few years, Hazel has never been anything but terminal, her final chapter inscribed upon diagnosis. ",
+      "description": "Mặc dù có phép màu y khoa giúp khối u teo nhỏ và kéo dài thêm được vài năm, Hazel vẫn không thoát khỏi giai đoạn cuối, chương cuối cùng của cuộc đời cô đã được ghi ngay khi chẩn đoán bệnh. ",
       "category": "business",
       "trending": true,
       "coverImage": "book-12.png",
-      "oldPrice": 19.99,
-      "newPrice": 9.99
+      "oldPrice": "475.000",
+      "newPrice": "237.000"
     },
     {
       "_id": 13,
       "title": "The Picture of Dorian Gray",
-      "description": "Oscar Wilde’s only novel is the dreamlike story of a young man who sells his soul for eternal youth and beauty.",
+      "description": "Cuốn tiểu thuyết duy nhất của Oscar Wilde là câu chuyện như mơ về một chàng trai trẻ bán linh hồn mình để đổi lấy tuổi trẻ và sắc đẹp vĩnh cửu.",
       "category": "horror",
       "trending": true,
       "coverImage": "book-13.png",
-      "oldPrice": 26.99,
-      "newPrice": 21.99
+      "oldPrice": "640.000",
+      "newPrice": "522.000"
     },
     {
       "_id": 14,
       "title": "The Giving Tree",
-      "description": "'Once there was a tree...and she loved a little boy.'So begins a story of unforgettable perception, beautifully written and illustrated by the gifted and versatile Shel Silverstein.",
+      "description": "'Ngày xưa có một cái cây...và cô ấy yêu một cậu bé.'Câu chuyện về nhận thức khó quên bắt đầu như vậy, được viết và minh họa một cách tuyệt đẹp bởi tác giả tài năng và đa tài Shel Silverstein.",
       "category": "fiction",
       "trending": false,
       "coverImage": "book-14.png",
-      "oldPrice": 34.99,
-      "newPrice": 24.99
+      "oldPrice": "830.000",
+      "newPrice": "593.000"
     },
     {
       "_id": 15,
       "title": "Gone with the Wind",
-      "description": "Scarlett O'Hara, the beautiful, spoiled daughter of a well-to-do Georgia plantation owner, must use every means at her disposal to claw her way out of the poverty she finds herself in after Sherman's March to the Sea.",
+      "description": "Scarlett O'Hara, cô con gái xinh đẹp, được cưng chiều của một chủ đồn điền giàu có ở Georgia, phải dùng mọi cách có thể để thoát khỏi cảnh nghèo đói sau cuộc hành quân ra biển của Sherman.",
       "category": "fiction",
       "trending": false,
       "coverImage": "book-15.png",
-      "oldPrice": 22.99,
-      "newPrice": 12.99
+      "oldPrice": "545.000",
+      "newPrice": "310.000"
     },
     {
       "_id": 16,
       "title": "The Lightning Thief",
-      "description": "Percy Jackson is a good kid, but he can't seem to focus on his schoolwork or control his temper. And lately, being away at boarding school is only getting worse - Percy could have sworn his pre-algebra teacher turned into a monster and tried to kill him",
+      "description": "Percy Jackson là một đứa trẻ ngoan, nhưng cậu ấy dường như không thể tập trung vào việc học hoặc kiểm soát tính khí của mình. Và gần đây, việc xa nhà ở trường nội trú chỉ trở nên tồi tệ hơn - Percy có thể thề rằng giáo viên tiền đại số của mình đã biến thành một con quái vật và cố giết cậu ấy",
       "category": "fiction",
       "trending": false,
       "coverImage": "book-16.png",
-      "oldPrice": 24.99,
-      "newPrice": 19.99
+      "oldPrice": "593.000",
+      "newPrice": "475.000"
     },
     {
       "_id": 17,
       "title": "Alice’s Adventures in Wonderland",
-      "description": "When Alice sees a white rabbit take a watch out of its waistcoat pocket she decides to follow it, and a sequence of most unusual events is set in motion. This mini book contains the entire topsy-turvy stories of Alice's Adventures in Wonderland",
+      "description": "Khi Alice nhìn thấy một chú thỏ trắng lấy một chiếc đồng hồ ra khỏi túi áo ghi lê, cô quyết định đi theo nó, và một chuỗi các sự kiện bất thường nhất đã diễn ra. Cuốn sách nhỏ này chứa toàn bộ những câu chuyện lộn xộn của Cuộc phiêu lưu của Alice ở xứ sở thần tiên",
       "category": "adventure",
       "trending": true,
       "coverImage": "book-17.png",
-      "oldPrice": 49.99,
-      "newPrice": 39.99
+      "oldPrice": "1.186.000",
+      "newPrice": "950.000"
     },
     {
       "_id": 18,
       "title": "Divergent",
-      "description": "On an appointed day of every year, all sixteen-year-olds must select the faction to which they will devote the rest of their lives. For Beatrice, the decision is between staying with her family and being who she really is",
+      "description": "Vào một ngày được chỉ định hàng năm, tất cả những đứa trẻ mười sáu tuổi phải chọn phe phái mà chúng sẽ cống hiến suốt quãng đời còn lại. Đối với Beatrice, quyết định nằm ở việc ở lại với gia đình và trở thành con người thực sự của cô ấy",
       "category": "business",
       "trending": true,
       "coverImage": "book-18.png",
-      "oldPrice": 18.99,
-      "newPrice": 12.99
+      "oldPrice": "450.000",
+      "newPrice": "308.000"
     },
     {
       "_id": 19,
       "title": "The Alchemist",
-      "description": "Paulo Coelho's masterpiece tells the mystical story of Santiago, an Andalusian shepherd boy who yearns to travel in search of a worldly treasure.",
+      "description": "Kiệt tác của Paulo Coelho kể về câu chuyện huyền bí của Santiago, một cậu bé chăn cừu vùng Andalusia khao khát đi tìm kho báu thế gian.",
       "category": "adventure",
       "trending": true,
       "coverImage": "book-19.png",
-      "oldPrice": 35.99,
-      "newPrice": 27.99
+      "oldPrice": "854.000",
+      "newPrice": "664.000"
     },
     {
       "_id": 20,
       "title": "Four Thousand Weeks",
-      "description": "Nobody needs to be told there isn’t enough time. We’re obsessed with our lengthening to-do lists, overfilled inboxes, work-life balance, and ceaseless battle against distraction; we’re deluged with advice on becoming more productive and efficient",
+      "description": "Không ai cần phải được bảo rằng không có đủ thời gian. Chúng ta bị ám ảnh bởi danh sách việc cần làm ngày càng dài, hộp thư đến quá đầy, sự cân bằng giữa công việc và cuộc sống, và cuộc chiến không ngừng chống lại sự sao nhãng; chúng ta bị ngập trong lời khuyên về việc trở nên năng suất và hiệu quả hơn",
       "category": "business",
       "trending": false,
       "coverImage": "book-20.png",
-      "oldPrice": 24.99,
-      "newPrice": 14.99
+      "oldPrice": "593.000",
+      "newPrice": "355.000"
     }
   ]
   

@@ -26,7 +26,7 @@ const Recommened = () => {
 
   return (
     <div className='py-16 bg-white dark:bg-gray-900 text-black dark:text-white'>
-      <h2 className="text-3xl font-semibold mb-6">Recommened for you</h2>
+      <h2 className="text-3xl font-semibold mb-6">Đề xuất cho bạn</h2>
     
         <Swiper
         slidesPerView={1}
@@ -64,11 +64,5 @@ const Recommened = () => {
   );
   
 };
-/*
-const Recommened = () =>{
-  return(
-    <div>Recommened</div>
-  )
-}
-*/
+
 export default Recommened;
