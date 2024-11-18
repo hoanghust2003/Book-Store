@@ -6,12 +6,10 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 import ReviewSection from "./ReviewSection";
 import RecommendSection from "./RecommendSection";
+import { useFetchAllBooksQuery } from "../../redux/features/books/booksApi";
 const SingleBook = () => {
   const { id } = useParams();
-  const [book, setBook] = useState(null);
-  const [reviews, setReviews] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const {data: book,isLoading,isError} = useFetchAllBooksQuery(id);
 
   const dispatch = useDispatch();
 
@@ -19,32 +17,6 @@ const SingleBook = () => {
     dispatch(addToCart(product));
   };
 
-  const alreadyPurchased = false;
-
-  useEffect(() => {
-    fetch("/books.json")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        const foundBook = data.find((b) => b._id === parseInt(id));
-        setBook(foundBook);
-        setIsLoading(false);
-        // Fetch reviews for the book
-        fetch(`/reviews/${id}.json`)
-          .then((res) => res.json())
-          .then((data) => setReviews(data))
-          .catch((error) => console.error("Error fetching reviews:", error));
-      })
-      .catch((error) => {
-        console.error("Error fetching book data:", error);
-        setIsError(true);
-        setIsLoading(false);
-      });
-  }, [id]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !book)
