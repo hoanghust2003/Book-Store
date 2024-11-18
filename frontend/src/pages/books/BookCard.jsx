@@ -33,15 +33,15 @@ const BookCard = ({book}) => {
             .slice(0, 80)}...` : book?.description
           }</p>
           <p className="font-medium mb-5">
-            ${book?.newPrice} <span className="line-through font-normal ml-2">$
-                {book?.oldPrice}
+            {book?.newPrice} vnđ <span className="line-through font-normal ml-2">
+                {book?.oldPrice} vnđ
             </span>
           </p>
           <button 
           onClick={() => handleAddToCart(book)}
           className="btn-primary px-6 space-x-1 flex items-center gap-1 ">
             <FiShoppingCart className="" />
-            <span>Add to Cart</span>
+            <span>Thêm vào giỏ</span>
           </button>
         </div>
       </div>
