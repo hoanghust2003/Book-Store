@@ -16,14 +16,9 @@ import { useFetchAllBooksQuery } from '../../redux/features/books/booksApi';
 
 
 const Recommened = () => {
-  //const {data: books = []} = useFetchAllBooksQuery();
-  const [books, setBooks] = useState([]);
-  useEffect(() => {
-    fetch("books.json")
-      .then(res => res.json())
-      .then(data => setBooks(data))
-  }, []);
 
+  const {data: books = []} = useFetchAllBooksQuery();
+  
   return (
     <div className='py-16 bg-white dark:bg-gray-900 text-black dark:text-white'>
       <h2 className="text-3xl font-semibold mb-6">Đề xuất cho bạn</h2>
