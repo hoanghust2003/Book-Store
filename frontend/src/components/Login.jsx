@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form"
-//import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const [message, setMessage] = useState("")
-//    const { loginUser, signInWithGoogle} = useAuth();
+    const { loginUser, signInWithGoogle} = useAuth();
     const navigate = useNavigate()
     const {
         register,

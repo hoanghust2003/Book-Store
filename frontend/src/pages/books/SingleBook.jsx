@@ -6,12 +6,31 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 import ReviewSection from "./ReviewSection";
 import RecommendSection from "./RecommendSection";
-import { useFetchAllBooksQuery } from "../../redux/features/books/booksApi";
+import { useFetchBookByIdQuery } from "../../redux/features/books/booksApi";
+import { useGetPublicReviewsQuery } from "../../redux/features/reviews/reviewsApi";
 const SingleBook = () => {
   const { id } = useParams();
-  const {data: book,isLoading,isError} = useFetchAllBooksQuery(id);
-
+  const {data: book,isLoading,isError} = useFetchBookByIdQuery(id);
+  const { data: reviews = [], refetch } = useGetPublicReviewsQuery(id);
   const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     try {
+  //       const response = await fetch(`/api/reviews/${id}`);
+  //       const data = await response.json();
+  //       setReviews(data);
+  //     } catch (error) {
+  //       console.error("Error fetching reviews:", error);
+  //     }
+  //   };
+
+  //   fetchReviews();
+  // }, [id]);
+
+  useEffect(() => {
+    refetch(); // Refetch reviews 
+  }, [refetch]);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
@@ -61,7 +80,8 @@ const SingleBook = () => {
         </div>
 
       </div>
-      <ReviewSection id={book?._id} reviews={reviews} />
+
+      <ReviewSection id={book?._id} title="Reviews" reviews={reviews} />
 
     </div>
       
