@@ -9,11 +9,18 @@ const Banner = () => {
        </div> 
         {/*left side */}
        <div className='md:w-1/2 w-full'>
-          <h1 className ='md:text-5xl text-2xl font-medium mb-7'>New release this weekend</h1>
-          <p className='mb-10'>It's time to update your reading list with some of the<br />
-             latest and greatest releases in the literary world. From<br />
-              heart-pumping thrillers to captivating memoirs, this<br />
-               week's new releases offer something for everyone</p>
+          <h1 className ='md:text-5xl text-2xl font-medium mb-7'>Bản phát hành cuối tuần </h1>
+          <p className='mb-10'>
+            Đã đến lúc bạn làm mới danh sách sách của mình với những
+            <br />
+            tác phẩm mới nhất và tuyệt vời nhất trong thế giới văn chương. 
+            <br />
+            Từ những cuốn tiểu thuyết gay cấn khiến tim đập thình thịch đến những hồi ký 
+            <br />
+            đầy cuốn hút, các ấn phẩm ra mắt tuần này chắc chắn sẽ 
+            <br/>
+            mang đến điều gì đó đặc biệt cho mọi độc giả.
+          </p>
             <button className='btn-primary'>Subcribe</button>
        </div>
 
