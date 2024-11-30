@@ -11,7 +11,7 @@ const CheckoutPage = () => {
   const totalPrice = cartItems
     .reduce((acc, item) => acc + item.newPrice, 0)
     .toFixed(2);
-  const {currentUser} = useAuth
+  const {currentUser} = useAuth()
   const {
     register,
     handleSubmit,
