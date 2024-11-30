@@ -12,17 +12,17 @@ const Footer = () => {
         <div className="md:w-1/2 w-full">
           <img src={footerLogo} alt="Logo" className="mb-5 w-36" />
           <ul className="flex flex-col md:flex-row gap-4">
-            <li><a href="#home" className="hover:text-primary">Home</a></li>
-            <li><a href="#services" className="hover:text-primary">Services</a></li>
-            <li><a href="#about" className="hover:text-primary">About Us</a></li>
-            <li><a href="#contact" className="hover:text-primary">Contact</a></li>
+            <li><a href="#home" className="hover:text-primary">Trang chủ</a></li>
+            <li><a href="#services" className="hover:text-primary">Dịch vụ</a></li>
+            <li><a href="#about" className="hover:text-primary">Giới thiệu</a></li>
+            <li><a href="#contact" className="hover:text-primary">Liên hệ</a></li>
           </ul>
         </div>
 
         {/* Right Side - Newsletter */}
         <div className="md:w-1/2 w-full">
           <p className="mb-4">
-            Subscribe to our newsletter to receive the latest updates, news, and offers!
+          Đăng ký nhận bản tin của chúng tôi để nhận những thông tin cập nhật, tin tức và ưu đãi mới nhất!
           </p>
           <div className="flex">
             <input
@@ -41,8 +41,8 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center mt-10 border-t border-gray-700 pt-6">
         {/* Left Side - Privacy Links */}
         <ul className="flex gap-6 mb-4 md:mb-0">
-          <li><a href="#privacy" className="hover:text-primary">Privacy Policy</a></li>
-          <li><a href="#terms" className="hover:text-primary">Terms of Service</a></li>
+          <li><a href="#privacy" className="hover:text-primary">Chính sách bảo mật</a></li>
+          <li><a href="#terms" className="hover:text-primary">Điều khoản dịch vụ</a></li>
         </ul>
 
         {/* Right Side - Social Icons */}
