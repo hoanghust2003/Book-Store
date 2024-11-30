@@ -1,5 +1,4 @@
 const { z } = require("zod");
-const { RequestHandler } = require("express");
 
 const emailValidationSchema = {
   email: z
