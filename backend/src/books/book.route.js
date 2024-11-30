@@ -17,6 +17,7 @@ router.get("/:id", getSingleBook);
 // update a book endpoint
 router.put("/edit/:id", verifyAdminToken, UpdateBook);
 
+// delete a book endpoint
 router.delete("/:id", verifyAdminToken, deleteABook)
 
 
