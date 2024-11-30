@@ -3,5 +3,4 @@ backend/node_modules/
 
 # Ignore environment file in backend
 backend/.env
-backend/src/review/
 frontend/.env.local
