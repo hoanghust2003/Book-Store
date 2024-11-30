@@ -4,7 +4,6 @@ const Order = require('../orders/order.model');
 const Book = require('../books/book.model');
 const router = express.Router();
 
-
 // Function to calculate admin stats
 router.get("/", async (req, res) => {
     try {
