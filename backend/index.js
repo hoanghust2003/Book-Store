@@ -22,18 +22,26 @@ const bookRoutes = require('./src/books/book.route');
 const orderRoutes = require("./src/orders/order.route")
 const userRoutes =  require("./src/users/user.route")
 const adminRoutes = require("./src/stats/admin.stats")
-//const reviewRoutes = require("./src/review/review.route")
+const reviewRoutes = require("./src/review/review.route")
 const authRouter = require("./src/auth/auth.route")
 
-const errorHandler = require("./src/middleware/error")
+const errorHandler = require("./src/middleware/error");
+const fileParser = require("./src/middleware/file");
 app.use(errorHandler)
 
 app.use("/api/books", bookRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/auth", userRoutes)
 app.use("/api/admin", adminRoutes)
-//app.use("/api/review",reviewRoutes)
+app.use("/api/review",reviewRoutes)
 app.use("/auth",authRouter)
+
+app.use("/test",fileParser,(req,res) => {
+  console.log(req.files)
+  console.log(req.body)
+  
+  res.json({})
+})
 
 async function main() {
   await mongoose.connect(process.env.DB_URL);
