@@ -21,6 +21,15 @@ const userSchema =  new mongoose.Schema({
         enum: ['user', 'admin'],
         required: true,
         default: 'user'
+    },
+    signedUp: {
+        type: Boolean,
+        default: false
+    },
+    avatar: {
+        type: Object,
+        url: String,
+        id: String,
     }
 })
 

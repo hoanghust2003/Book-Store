@@ -9,6 +9,16 @@ const emailValidationSchema = {
     .email("Invalid email!"),
 };
 
+const newUserSchema = {
+  name: z
+    .string({
+      required_error: "Name is missing!",
+      invalid_type_error: "Invalid name!",
+    })
+    .min(3,"Name must be 3 characters long!")
+    .trim()
+};
+
 const validate = (obj) => {
   return (req, res, next) => {
     const schema = z.object(obj);
@@ -25,4 +35,4 @@ const validate = (obj) => {
   };
 };
 
-module.exports = { emailValidationSchema, validate };
+module.exports = { emailValidationSchema, validate, newUserSchema };

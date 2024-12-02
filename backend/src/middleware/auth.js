@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../users/user.model');
-const { sendErrorResponse } = require('../utils/helper');
+const { sendErrorResponse, formatUserProfile } = require('../utils/helper');
 
 const isAuth = async (req, res, next) => {
   const authToken = req.cookies.authToken;
@@ -30,12 +30,7 @@ const isAuth = async (req, res, next) => {
       });
     }
 
-    req.user = {
-      id: user._id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
-    };
+    req.user = formatUserProfile(user)
 
     next();
   } catch (error) {

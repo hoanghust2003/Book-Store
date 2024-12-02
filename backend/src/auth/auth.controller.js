@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer')
 const mail = require("../utils/mail")
 const {sendErrorResponse, formatUserProfile} = require("../utils/helper")
 const jwt = require("jsonwebtoken")
+const cloudinary = require("../cloud/cloudinary")
 const generateAuthLink = async (req, res) => {
     // generate authentication link and send that link to the users email address
     /* 
@@ -93,9 +94,9 @@ const verifyAuthToken = async (req, res) => {
     expires: new Date(Date.now() + 15 * 24 * 60 *60 * 1000)
   })
 
-  //res.redirect(`${process.env.AUTH_SUCCESS_URL}?profile=${JSON.stringify(formatUserProfile(user))}`)
+  res.redirect(`${process.env.AUTH_SUCCESS_URL}?profile=${JSON.stringify(formatUserProfile(user))}`)
 
-  res.send()
+  // res.send()
 }
 
 const sendProfileInfo = (req,res) => {
@@ -108,9 +109,40 @@ const logout = (req,res) => {
   res.clearCookie('authToken').send()
 }
 
+const updateProfile = async (req,res) => {
+  const user = await UserModel.findByIdAndUpdate(req.user.id, 
+    {
+      name : req.body.name,
+      signedUp : true
+    }, {
+      new : true,
+    })
+  if (!user) return sendErrorResponse({
+    res,
+    message: "Something went wrong user not found!",
+    status: 500,
+   })
+
+   //if there is any file, upload to cloud and update db
+   const file = req.files.avatar
+   if(!Array.isArray(file)){
+    const {public_id, secure_url, url} = await cloudinary.uploader.upload(file.filepath, {
+      width: 300,
+      height: 300,
+      gravity: 'face',
+      crop: 'fill'
+    })
+    user.avatar = {id: public_id, url : secure_url}
+    await user.save()
+   }
+
+   res.json({profile: formatUserProfile(user)})
+}
+
 module.exports = {
     generateAuthLink,
     verifyAuthToken,
     sendProfileInfo,
-    logout
+    logout,
+    updateProfile
 }
