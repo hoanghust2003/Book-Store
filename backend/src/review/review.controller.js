@@ -7,7 +7,7 @@ const addReview = async (req, res) => {
 
   try {
     await ReviewModel.findOneAndUpdate(
-      { bookId, email: req.user.email },
+      { book : bookId, user: req.user.id },
       { content, rating },
       { upsert: true, new: true }
     );
@@ -15,7 +15,7 @@ const addReview = async (req, res) => {
     const [result] = await ReviewModel.aggregate([
       {
         $match: {
-          bookId: new Types.ObjectId(bookId),
+          book: new Types.ObjectId(bookId),
         },
       },
       {
@@ -31,7 +31,7 @@ const addReview = async (req, res) => {
     });
 
     res.status(200).json({
-      message: "Review added successfully.",
+      message: "Review updated.",
     });
   } catch (error) {
     console.error("Error adding review", error);
@@ -45,7 +45,7 @@ const getReview = async (req, res) => {
   if (!isValidObjectId(bookId))
     return res.status(422).json({ message: "Book id is not valid!" });
 
-  const review = await ReviewModel.findOne({ bookId, email: req.user.email });
+  const review = await ReviewModel.findOne({ book: bookId, user: req.user.id });
 
   if (!review)
     return res.status(404).json({ message: "Review not found!" });

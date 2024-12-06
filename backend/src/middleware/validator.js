@@ -1,5 +1,5 @@
 const { z } = require("zod");
-
+const mongoose = require("mongoose")
 const emailValidationSchema = {
   email: z
     .string({
@@ -19,9 +19,35 @@ const newUserSchema = {
     .trim()
 };
 
-const validate = (obj) => {
+const newReviewSchema = z.object({
+  rating: z
+    .number({
+      required_error: "Rating is missing!",
+      invalid_type_error: "Invalid rating!",
+    })
+    .min(1, "Minimum rating should be 1")
+    .max(5, "Maximum rating should be 5"),
+  content: z
+    .string({
+      invalid_type_error: "Invalid content!",
+    })
+    .optional(),
+  bookId: z
+    .string({
+      required_error: "Book id is missing!",
+      invalid_type_error: "Invalid book id!",
+    })
+    .transform((arg, ctx) => {
+      if (!mongoose.isValidObjectId(arg)) {
+        ctx.addIssue({ code: "custom", message: "Invalid book id!" });
+        return z.NEVER;
+      }
+      return arg;
+    }),
+});
+
+const validate = (schema) => {
   return (req, res, next) => {
-    const schema = z.object(obj);
 
     const result = schema.safeParse(req.body);
 
@@ -35,4 +61,4 @@ const validate = (obj) => {
   };
 };
 
-module.exports = { emailValidationSchema, validate, newUserSchema };
+module.exports = { emailValidationSchema, validate, newUserSchema, newReviewSchema};

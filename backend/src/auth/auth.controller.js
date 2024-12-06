@@ -6,6 +6,7 @@ const mail = require("../utils/mail")
 const {sendErrorResponse, formatUserProfile} = require("../utils/helper")
 const jwt = require("jsonwebtoken")
 const cloudinary = require("../cloud/cloudinary")
+const updateAvatarToCloudinary = require("../utils/fileUpload")
 const generateAuthLink = async (req, res) => {
     // generate authentication link and send that link to the users email address
     /* 
@@ -125,14 +126,9 @@ const updateProfile = async (req,res) => {
 
    //if there is any file, upload to cloud and update db
    const file = req.files.avatar
-   if(!Array.isArray(file)){
-    const {public_id, secure_url, url} = await cloudinary.uploader.upload(file.filepath, {
-      width: 300,
-      height: 300,
-      gravity: 'face',
-      crop: 'fill'
-    })
-    user.avatar = {id: public_id, url : secure_url}
+   if(file && !Array.isArray(file)){
+    user.avatar=await updateAvatarToCloudinary(file, user.avatar.id)
+  
     await user.save()
    }
 

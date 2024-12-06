@@ -30,7 +30,11 @@ const userSchema =  new mongoose.Schema({
         type: Object,
         url: String,
         id: String,
-    }
+    },
+    books: [{
+        type: mongoose.Schema.ObjectId,
+        ref: 'Book'
+    }]
 })
 
 userSchema.pre('save', async function( next) {

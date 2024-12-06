@@ -10,6 +10,7 @@ const formatUserProfile = (user) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        avatar: user.avatar ? user.avatar.url : null,
     }
 }
 module.exports = { sendErrorResponse, formatUserProfile };
