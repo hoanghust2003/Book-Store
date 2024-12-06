@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form"
 import { useAuth } from '../context/AuthContext';
@@ -7,6 +7,7 @@ import { useAuth } from '../context/AuthContext';
 const Register = () => {
     const [message, setMessage] = useState("");
     const {registerUser, signInWithGoogle} = useAuth();
+    const navigate = useNavigate();
     
     const {
         register,
@@ -17,16 +18,26 @@ const Register = () => {
 
     //   register user
 
-      const onSubmit = async(data) => {
-        // console.log(data)
+    //   const onSubmit = async(data) => {
+    //     // console.log(data)
+    //     try {
+    //         await registerUser(data.email, data.password);
+    //         alert("User registered successfully!")
+    //     } catch (error) {
+    //        setMessage("Please provide a valid email and password") 
+    //        console.error(error)
+    //     }
+    //   }
+    const onSubmit = async (data) => {
         try {
-            await registerUser(data.email, data.password);
-            alert("User registered successfully!")
+            await registerUser(data.name, data.email, data.password);
+            alert("Gửi link xác thực vào email!");
+            navigate("/login");
         } catch (error) {
-           setMessage("Please provide a valid email and password") 
-           console.error(error)
+            setMessage("Please provide a valid email and password");
+            console.error(error);
         }
-      }
+    };
 
       const handleGoogleSignIn = async() => {
         try {
@@ -44,6 +55,14 @@ const Register = () => {
         <h2 className='text-xl font-semibold mb-4'>Please Register</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
+        <div className='mb-4'>
+                <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="name">Name</label>
+                <input 
+                {...register("name", { required: true })} 
+                type="name" name="name" id="name" placeholder='Your Name'
+                className='shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow'
+                />
+            </div>
             <div className='mb-4'>
                 <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor="email">Email</label>
                 <input 

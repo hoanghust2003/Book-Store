@@ -4,6 +4,7 @@ import './App.css'
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import { AuthProvide } from './context/AuthContext';
+import { ToastContainer } from 'react-toastify';
 function App() {
   
 
@@ -16,6 +17,7 @@ function App() {
       </main>
     <Footer/>
     </AuthProvide>
+    <ToastContainer position="top-right" autoClose={5000} hideProgressBar={false} closeOnClick />
     </>
   )
 }

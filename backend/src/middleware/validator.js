@@ -1,23 +1,45 @@
 const { z } = require("zod");
 const mongoose = require("mongoose")
-const emailValidationSchema = {
+const emailValidationSchema = z.object({
   email: z
     .string({
       required_error: "Email is missing!",
       invalid_type_error: "Invalid email type!",
     })
     .email("Invalid email!"),
-};
+});
 
-const newUserSchema = {
+const updateUserSchema = z.object({
   name: z
     .string({
       required_error: "Name is missing!",
       invalid_type_error: "Invalid name!",
     })
     .min(3,"Name must be 3 characters long!")
-    .trim()
-};
+    .trim(),
+})
+
+const newUserSchema = z.object({
+  name: z
+    .string({
+      required_error: "Name is missing!",
+      invalid_type_error: "Invalid name!",
+    })
+    .min(3,"Name must be 3 characters long!")
+    .trim(),
+    email: z
+    .string({
+      required_error: "Email is missing!",
+      invalid_type_error: "Invalid email type!",
+    })
+    .email("Invalid email!"),
+  password: z
+    .string({
+      required_error: "Password is missing!",
+      invalid_type_error: "Invalid password type!",
+    })
+    .min(6, "Password must be at least 6 characters long!"),
+});
 
 const newReviewSchema = z.object({
   rating: z
@@ -61,4 +83,4 @@ const validate = (schema) => {
   };
 };
 
-module.exports = { emailValidationSchema, validate, newUserSchema, newReviewSchema};
+module.exports = { emailValidationSchema, validate, newUserSchema, newReviewSchema,updateUserSchema};

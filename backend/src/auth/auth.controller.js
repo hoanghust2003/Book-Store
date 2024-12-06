@@ -111,34 +111,136 @@ const logout = (req,res) => {
 }
 
 const updateProfile = async (req,res) => {
-  const user = await UserModel.findByIdAndUpdate(req.user.id, 
-    {
-      name : req.body.name,
-      signedUp : true
-    }, {
-      new : true,
-    })
-  if (!user) return sendErrorResponse({
-    res,
-    message: "Something went wrong user not found!",
-    status: 500,
-   })
+  try {
+    const user = await UserModel.findByIdAndUpdate(
+      req.user.id,
+      {
+        name: req.body.name,
+        signedUp: true,
+      },
+      {
+        new: true,
+      }
+    );
 
-   //if there is any file, upload to cloud and update db
-   const file = req.files.avatar
-   if(file && !Array.isArray(file)){
-    user.avatar=await updateAvatarToCloudinary(file, user.avatar.id)
-  
-    await user.save()
-   }
+    if (!user) {
+      return sendErrorResponse({
+        res,
+        message: "Something went wrong, user not found!",
+        status: 500,
+      });
+    }
 
-   res.json({profile: formatUserProfile(user)})
+    // If there is any file, upload to cloud and update db
+    const file = req.files?.avatar;
+    // if (file && !Array.isArray(file)) {
+    //   user.avatar = await updateAvatarToCloudinary(file, user.avatar?.id);
+    //   await user.save();
+    // }
+    if (file) {
+      if (Array.isArray(file)) {
+        // Nếu `file` là mảng (nhiều tệp), chỉ lấy tệp đầu tiên
+        return sendErrorResponse({
+          res,
+          message: "Please upload only one avatar.",
+          status: 400,
+        });
+      }
+      
+      // Cập nhật avatar nếu có tệp
+      user.avatar = await updateAvatarToCloudinary(file, user.avatar?.id);
+      await user.save();
+    }
+
+    res.json({ profile: formatUserProfile(user) });
+  } catch (error) {
+    console.error("Error updating profile", error);
+    res.status(500).json({ message: "Failed to update profile" });
+  }
 }
+
+const registerUser = async (req, res) => {
+  const { name, email, username, password } = req.body;
+
+  try {
+    // check if email existing
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email exists!" });
+    }
+
+    // Assign a default username if not provided
+    const uniqueUsername = username || `user_${Date.now()}`;
+
+    // create new user
+    const newUser = new UserModel({
+      name,
+      email,
+      username: uniqueUsername,
+      password,
+      role: 'user',
+    });
+
+    // save new user to database
+    await newUser.save();
+
+    const userId = newUser._id;
+    //delete old token if exist
+    await VerificationTokenModel.findOneAndDelete({ userId });
+
+    // create random token for auth
+    const randomToken = crypto.randomBytes(36).toString("hex")
+
+    //save token to database
+    await VerificationTokenModel.create({
+      userId: newUser._id,
+      token: randomToken,
+    })
+
+    //create link for auth
+    const verificationLink = `${process.env.VERIFICATION_LINK}?token=${randomToken}&userId=${userId}`
+
+    //send email for auth
+    await mail.sendVerificationMail({
+      link: verificationLink,
+      to: newUser.email,
+    });
+
+    console.log(req.body);
+
+    res.status(201).json({ message: "Register Success!", user: newUser });
+  } catch (error) {
+    console.error("Error registering user", error);
+    res.status(500).json({ message: "Register Fail!" });
+  }
+};
+
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await UserModel.findOne({ email });
+  if (!user || !user.comparePassword(password)) {
+      return sendErrorResponse({
+          res,
+          message: "Invalid email or password",
+          status: 401,
+      });
+  }
+  const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '15d'
+  });
+  res.json({ token, user: formatUserProfile(user) });
+};
+
+const getProfile = async (req, res) => {
+  res.json({ profile: req.user });
+};
 
 module.exports = {
     generateAuthLink,
     verifyAuthToken,
     sendProfileInfo,
     logout,
-    updateProfile
+    updateProfile,
+    registerUser,
+    loginUser
 }

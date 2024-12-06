@@ -3,7 +3,8 @@ const UserModel = require('../users/user.model');
 const { sendErrorResponse, formatUserProfile } = require('../utils/helper');
 
 const isAuth = async (req, res, next) => {
-  const authToken = req.cookies.authToken;
+  const authToken = req.cookies.authToken || 
+  (req.headers.authorization && req.headers.authorization.split(' ')[1]);;
 
   // send error response if no token
   if (!authToken) {

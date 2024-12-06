@@ -13,7 +13,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import ManageBooks from "../pages/dashboard/manageBooks/ManageBooks";
 import AddBook from "../pages/dashboard/addBook/AddBook";
 import UpdateBook from "../pages/dashboard/EditBook/UpdateBook";
-
+import Profile from '../pages/profile/Profile';
 import SingleBook from "../pages/books/SingleBook";
 import PrivateRoute from "./PrivateRoute";
 import OrderPage from "../pages/books/OrderPage";
@@ -63,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <AdminLogin/>
+      },
+      {
+        path: "/profile",
+        element: <PrivateRoute><Profile /></PrivateRoute>,
       },
       {
         path: "/dashboard",

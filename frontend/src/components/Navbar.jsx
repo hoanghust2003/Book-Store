@@ -8,7 +8,7 @@ import { HiOutlineShoppingCart } from "react-icons/hi";
 import DarkModeSwitch from "./DarkModeSwitch"; 
 
 import avatarImg from "../assets/avatar.png";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
 
@@ -24,6 +24,7 @@ const Navbar = () => {
   const cartItems = useSelector(state => state.cart.cartItems);
 
   const {currentUser, logout} = useAuth()
+  console.log("Current User in render:", currentUser);
 
   const handleLogOut = () => {
     logout()
@@ -59,7 +60,7 @@ const Navbar = () => {
               <>
                 <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
                   <img
-                    src={avatarImg}
+                    src={currentUser?.avatar || avatarImg}
                     alt=""
                     className={`size-7 rounded-full $
                       {currentUser ? 'ring-2 ring-blue-500' : ''}`}
@@ -86,6 +87,11 @@ const Navbar = () => {
                           </Link>
                         </li>
                       ))}
+                      <li>
+                        <Link to="/profile" className="block px-4 py-2 text-sm hover:bg-gray-100">
+                          Profile
+                        </Link>
+                        </li>
                       <li>
                         <button onClick={handleLogOut} 
                         className="block
