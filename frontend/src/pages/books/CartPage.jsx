@@ -28,7 +28,7 @@ const CartPage = () => {
             onClick={handleClearCart}
             className="relative -m-2 py-1 px-2 bg-red-500 text-white rounded-md hover:bg-secondary transition-all duration-200  "
           >
-            <span className="">Clear Cart</span>
+            <span className="">Xóa giỏ hàng</span>
           </button>
         </div>
       </div>
