@@ -23,5 +23,4 @@ authRouter.put('/profile',
   fileParser,
   validate(updateUserSchema),
   updateProfile)
-
 module.exports = authRouter;
