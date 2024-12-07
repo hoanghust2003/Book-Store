@@ -45,6 +45,7 @@ export const AuthProvide = ({children}) => {
         });
         const user = response.data.user;
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('tokenType', 'jwt');
 
         // Fetch user profile
         const profileResponse = await axios.get(`${getBaseUrl()}/auth/profile`, {
@@ -60,7 +61,29 @@ export const AuthProvide = ({children}) => {
     // sing up with google
     const signInWithGoogle = async () => {
      
-        return await signInWithPopup(auth, googleProvider)
+        // return await signInWithPopup(auth, googleProvider)
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+            const token = await user.getIdToken();
+    
+            // Store the token and token type in local storage
+            localStorage.setItem('token', token);
+            localStorage.setItem('tokenType', 'firebase');
+    
+            // Fetch user profile
+            const profileResponse = await axios.get(`${getBaseUrl()}/auth/profile`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+    
+            setCurrentUser(profileResponse.data.profile);
+            return profileResponse.data.profile;
+        } catch (error) {
+            console.error("Google sign in failed:", error.message);
+            throw error;
+        }
     }
 
     // logout the user
@@ -70,6 +93,7 @@ export const AuthProvide = ({children}) => {
     const logout = () => {
         setCurrentUser(null);
         localStorage.removeItem('token');
+        localStorage.removeItem('tokenType');
     }
 
     // manage user
@@ -91,6 +115,7 @@ export const AuthProvide = ({children}) => {
     // }, [])
     useEffect(() => {
         const token = localStorage.getItem('token');
+        const tokenType = localStorage.getItem('tokenType');
         if (token) {
             axios.get(`${getBaseUrl()}/auth/profile`, {
                 headers: {
@@ -102,7 +127,10 @@ export const AuthProvide = ({children}) => {
                     setCurrentUser(profileData);
                 }
                 setLoading(false);
-            }).catch(() => {
+            }).catch(error => {
+                console.error("Failed to fetch user profile:", error);
+                localStorage.removeItem('token');
+                localStorage.removeItem('tokenType');
                 setLoading(false);
             }); 
         } else {

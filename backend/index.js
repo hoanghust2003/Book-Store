@@ -3,7 +3,7 @@ require("express-async-errors")
 const app = express();
 const cors = require("cors");
 const cookieParser = require('cookie-parser')
-
+const helmet = require('helmet');
 const mongoose = require("mongoose");
 const port = process.env.PORT || 5000;
 require('dotenv').config()
@@ -16,6 +16,14 @@ app.use(cors({
 }))
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
+app.use(helmet()); // Use helmet for security headers
+
+// Set COOP and COEP headers
+app.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+    next();
+});
 
 // routes
 const bookRoutes = require('./src/books/book.route');

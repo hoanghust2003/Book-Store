@@ -1,6 +1,12 @@
 const jwt = require('jsonwebtoken');
 const UserModel = require('../users/user.model');
 const { sendErrorResponse, formatUserProfile } = require('../utils/helper');
+const admin = require('firebase-admin');
+const serviceAccount = require('../../book-store-7195c-firebase-adminsdk-jsi25-e5e576faf6.json' )
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const isAuth = async (req, res, next) => {
   const authToken = req.cookies.authToken || 
@@ -8,6 +14,7 @@ const isAuth = async (req, res, next) => {
 
   // send error response if no token
   if (!authToken) {
+    console.log("No auth token found");
     return sendErrorResponse({
       message: "Unauthorized request",
       status: 401,
@@ -15,7 +22,8 @@ const isAuth = async (req, res, next) => {
     });
   }
 
-  try {
+  /*
+   try {
     // if the token is valid
     const payload = jwt.verify(authToken, process.env.JWT_SECRET);
 
@@ -35,6 +43,65 @@ const isAuth = async (req, res, next) => {
 
     next();
   } catch (error) {
+    return sendErrorResponse({
+      message: "Unauthorized request",
+      status: 401,
+      res,
+    });
+  }
+};
+  
+  */
+
+  try {
+    // if the token is valid
+    let payload;
+    if (authToken.length > 500) {
+        // Verify Firebase token
+        payload = await admin.auth().verifyIdToken(authToken);
+        console.log("Firebase token payload:", payload);
+
+         // Check if user exists in Firebase
+         const firebaseUser = await admin.auth().getUser(payload.uid);
+         if (!firebaseUser) {
+           return sendErrorResponse({
+             message: "Unauthorized request user not found in Firebase!",
+             status: 401,
+             res,
+           });
+         }
+ 
+         req.user = {
+           uid: firebaseUser.uid,
+           email: firebaseUser.email,
+           name: firebaseUser.displayName,
+           avatar: firebaseUser.photoURL,
+         };
+        
+    } else {
+        // Verify JWT token
+        payload = jwt.verify(authToken, process.env.JWT_SECRET);
+        console.log("JWT token payload:", payload);
+
+        // Check user exists in MongoDB
+        // if the token is valid find user from the payload
+        // if the token is invalid it will throw error which we can handle
+        // from inside the error middleware
+        let user = await UserModel.findById(payload.userId);
+        if (!user) {
+          return sendErrorResponse({
+            message: "Unauthorized request user not found!",
+            status: 401,
+            res,
+          });
+        }
+
+        req.user = formatUserProfile(user);
+    }
+
+    next();
+  } catch (error) {
+    console.error("Error in isAuth middleware:", error);
     return sendErrorResponse({
       message: "Unauthorized request",
       status: 401,

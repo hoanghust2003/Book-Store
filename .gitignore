@@ -4,3 +4,4 @@ backend/node_modules/
 # Ignore environment file in backend
 backend/.env
 frontend/.env.local
+backend/book-store-7195c-firebase-adminsdk-jsi25-e5e576faf6.json
