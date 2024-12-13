@@ -52,7 +52,7 @@ const news = [
 
 const News = () => {
   return (
-    <div className="py-16 bg-white dark:bg-gray-900 text-black dark:text-white">
+    <div className="py-16 bg-white dark:bg-gray-900 text-black dark:text-white max-w-screen-xl mx-auto font-roboto">
       <h2 className="text-3xl font-semibold mb-6">Tin tức</h2>
 
       <Swiper

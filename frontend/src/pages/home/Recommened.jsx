@@ -20,11 +20,11 @@ const Recommened = () => {
   const {data: books = []} = useFetchAllBooksQuery();
   
   return (
-    <div className='py-16 bg-white dark:bg-gray-900 text-black dark:text-white'>
-      <h2 className="text-3xl font-semibold mb-6">Đề xuất cho bạn</h2>
+    <div className='py-16 bg-white dark:bg-gray-900 text-black dark:text-white max-w-screen-xl mx-auto'>
+      <h2 className="text-3xl font-semibold mb-6">ĐỀ XUẤT CHO BẠN</h2>
     
         <Swiper
-        slidesPerView={1}
+        slidesPerView={2}
         spaceBetween={30}
         navigation={true}
         breakpoints={{
@@ -41,7 +41,7 @@ const Recommened = () => {
             spaceBetween: 50,
             },
             1180: {
-            slidesPerView: 3,
+            slidesPerView: 2,
             spaceBetween: 50,
             }
         }}

@@ -24,9 +24,9 @@ const TopSellers = () => {
   )
 
   return (
-    <div className='py-10 bg-white dark:bg-gray-900 text-black dark:text-white' >
-      <h2 className='text-3xl font-semibold mb-6'>Top Sellers</h2>
-      {/*ccategory */}
+    <div className='py-10 bg-white dark:bg-gray-900 text-black dark:text-white max-w-screen-xl mx-auto' >
+      <h2 className='text-3xl font-semibold mb-6'>TOP SELLERS</h2>
+      {/*category */}
       <div className='mb-8 flex items-center'>
         <select 
         onChange={(e) => setSelectedCategory(e.target.value)}
@@ -41,7 +41,7 @@ const TopSellers = () => {
       </div>
 
       <Swiper
-                slidesPerView={1}
+                slidesPerView={2}
                 spaceBetween={30}
                 navigation={true}
                 breakpoints={{
@@ -58,7 +58,7 @@ const TopSellers = () => {
                         spaceBetween: 50,
                     },
                     1180: {
-                        slidesPerView: 3,
+                        slidesPerView: 2,
                         spaceBetween: 50,
                     }
                 }}

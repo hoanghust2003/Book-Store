@@ -42,7 +42,7 @@ const SingleBook = () => {
     return <div>Error happened while loading book info</div>;
 
   return (
-    <div>
+    <div className = "font-roboto">
         <div className="max-w-10xl mx-auto shadow-md p-5">
       <h1 className="text-2xl font-bold mb-6">{book.title}</h1>
 
@@ -57,17 +57,17 @@ const SingleBook = () => {
 
         <div className="md:w-1/2 md:pl-8">
           <p className="text-gray-700 mb-2">
-            <strong>Author:</strong> {book.author || "admin"}
+            <strong>Tác giả:</strong> {book.author || "admin"}
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Published:</strong>{" "}
+            <strong>Ngày xuất bản:</strong>{" "}
             {new Date(book?.createdAt).toLocaleDateString()}
           </p>
           <p className="text-gray-700 mb-4 capitalize">
-            <strong>Category:</strong> {book?.category}
+            <strong>Thể loại:</strong> {book?.category}
           </p>
           <p className="text-gray-700 mb-4">
-            <strong>Description:</strong> {book.description}
+            <strong>Tóm tắt nội dung:</strong> {book.description}
           </p>
 
           <button
@@ -75,7 +75,7 @@ const SingleBook = () => {
             className="btn-primary px-6 space-x-1 flex items-center gap-1 "
           >
             <FiShoppingCart className="" />
-            <span>Add to Cart</span>
+            <span>Thêm vào giỏ</span>
           </button>
         </div>
 

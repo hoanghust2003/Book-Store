@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form"
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const [message, setMessage] = useState("");
@@ -31,7 +33,7 @@ const Register = () => {
     const onSubmit = async (data) => {
         try {
             await registerUser(data.name, data.email, data.password);
-            alert("Gửi link xác thực vào email!");
+            toast.success("Gửi link xác thực vào email!");
             navigate("/login");
         } catch (error) {
             setMessage("Please provide a valid email and password");
@@ -42,10 +44,10 @@ const Register = () => {
       const handleGoogleSignIn = async() => {
         try {
             await signInWithGoogle();
-            alert("Login successful!");
+            toast.success("Login successful!");
             navigate("/")
         } catch (error) {
-            alert("Google sign in failed!") 
+            toast.error("Google sign in failed!") 
             console.error(error)
         }
       }

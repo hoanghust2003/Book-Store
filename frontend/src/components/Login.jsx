@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaGoogle } from "react-icons/fa";
 import { useForm } from "react-hook-form"
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const [message, setMessage] = useState("")
@@ -18,7 +20,7 @@ const Login = () => {
       const onSubmit = async (data) => {
         try {
             await loginUser(data.email, data.password);
-            alert("Đăng nhập thành công!");
+            toast.success("Đăng nhập thành công!");
             navigate("/")
         } catch (error) {
             setMessage("Vui lòng cung cấp email và mật khẩu hợp lệ") 
@@ -28,10 +30,10 @@ const Login = () => {
       const handleGoogleSignIn = async () => {
         try {
             await signInWithGoogle();
-            alert("Đăng nhập thành công!");
+            toast.success("Đăng nhập thành công!");
             navigate("/")
         } catch (error) {
-            alert("Đăng nhập Google không thành công!") 
+            toast.error("Đăng nhập Google không thành công!") 
             console.error(error)
         }
       }

@@ -36,9 +36,9 @@ const RecommendSection = ({ category }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-6">Books related to this category</h2>
+      <h2 className="text-2xl font-bold mb-6">CỬA HÀNG GIỚI THIỆU</h2>
       <Swiper
-        slidesPerView={1}
+        slidesPerView={2}
         spaceBetween={10}
         pagination={{ clickable: true }}
         navigation={true}
