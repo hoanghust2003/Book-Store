@@ -47,45 +47,6 @@ body {
    background-color: #ffffff; /* bg-white */
    color: #000000; /* text-black */
  }
- 
- .dark body {
-  font-family: 'Roboto', sans-serif;
-   background-color: #111827; /* bg-gray-900 */
-   color: #ffffff; /* text-white */
- }
-
-.dark .bg-primary {
-   background-color: #1f2937; /* bg-gray-800 */
- }
- 
- .dark .text-primary {
-   color: #ffffff; /* text-white */
- }
- 
- .dark .bg-secondary {
-   background-color: #374151; /* bg-gray-700 */
- }
- 
- .dark .text-secondary {
-   color: #d1d5db; /* text-gray-300 */
- }
- 
- .dark .bg-white {
-   background-color: #111827; /* bg-gray-900 */
- }
- 
- .dark .text-white {
-   color: #f3f4f6; /* text-gray-100 */
- }
- 
- .dark .hover\:bg-secondary:hover {
-   background-color: #4b5563; /* bg-gray-600 */
- }
- 
- .dark .hover\:text-white:hover {
-   color: #e5e7eb; /* text-gray-200 */
- }
-
  .font-roboto {
   font-family: 'Roboto', sans-serif;
 }

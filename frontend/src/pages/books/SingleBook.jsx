@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FiShoppingCart } from "react-icons/fi";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getImgUrl } from "../../utils/getImgUrl";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
@@ -8,6 +8,16 @@ import ReviewSection from "./ReviewSection";
 import RecommendSection from "./RecommendSection";
 import { useFetchBookByIdQuery } from "../../redux/features/books/booksApi";
 import { useGetPublicReviewsQuery } from "../../redux/features/reviews/reviewsApi";
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import HomeIcon from '@mui/icons-material/Home';
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+function handleClick(event) {
+  event.preventDefault();
+  console.info('You clicked a breadcrumb.');
+}
+
 const SingleBook = () => {
   const { id } = useParams();
   const { data: book, isLoading, isError } = useFetchBookByIdQuery(id);
@@ -41,15 +51,39 @@ const SingleBook = () => {
     return <div>Error happened while loading book info</div>;
 
   return (
-    <div className="font-roboto bg-gray-50 py-10 max-w-screen-xl mx-auto">
+    <div className="font-roboto bg-gray-50 dark:bg-gray-900 py-10 max-w-screen-xl mx-auto">
       {/* Breadcrumb */}
-      <div className="bg-white-50 py-2">
-        <div className="font-roboto text-sm text-gray-600 mb-5">
-          TRANG CHỦ &gt; SÁCH &gt; {book?.category.toUpperCase()} &gt;{" "}
-          <span className="text-gray-600 mb-5">{book.title.toUpperCase()}</span>
-        </div>
+      <div role="presentation" onClick={handleClick}>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link
+            underline="hover"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            color="inherit"
+            to="/"
+          >
+            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            Home
+          </Link>
+          <Link
+            underline="hover"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            color="inherit"
+            to="/books"
+          >
+            <LocalLibraryIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            Books
+          </Link>
+          <Typography
+            sx={{ color: 'text.primary', display: 'flex', alignItems: 'center' }}
+          >
+            <MenuBookIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            {book?.title}
+          </Typography>
+        </Breadcrumbs>
       </div>
-      <div className="max-w-10xl mx-auto shadow-md p-5">
+
+
+      <div className="max-w-10xl mx-auto shadow-md p-5 bg-white dark:bg-gray-800">
         {/* <h1 className="text-2xl font-bold mb-6">{book.title}</h1> */}
 
         <div className="flex flex-col md:flex-row md:items-center">
@@ -62,17 +96,17 @@ const SingleBook = () => {
           </div>
 
           <div className="md:w-1/2 md:pl-8">
-            <p className="text-gray-700 mb-2">
+            <p className="text-gray-700 dark:text-gray-300 mb-2">
               <strong>Tác giả:</strong> {book.author || "admin"}
             </p>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
               <strong>Ngày xuất bản:</strong>{" "}
               {new Date(book?.createdAt).toLocaleDateString()}
             </p>
-            <p className="text-gray-700 mb-4 capitalize">
+            <p className="text-gray-700 dark:text-gray-300 mb-4 capitalize">
               <strong>Thể loại:</strong> {book?.category}
             </p>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 dark:text-gray-300 mb-4">
               <strong>Tóm tắt nội dung:</strong> {book.description}
             </p>
 
@@ -82,7 +116,7 @@ const SingleBook = () => {
                 {book.newPrice} VND
               </div>
               {
-                <div className="text-sm text-gray-500 line-through">
+                <div className="text-sm text-gray-500 line-through dark:text-gray-400">
                   {book.oldPrice} VND
                 </div>
               }
@@ -99,12 +133,12 @@ const SingleBook = () => {
 
         {/* Tabs for Details, Reviews, and Recommendations */}
         <div className="mt-10">
-          <div className="border-b border-gray-200 mb-5">
+          <div className="border-b border-gray-200 dark:border-gray-700 mb-5">
             <ul className="flex space-x-10 justify-center">
               <li className="text-lg font-semibold text-primary border-b-2 border-primary pb-2">
                 Chi tiết sản phẩm
               </li>
-              <li className="text-lg font-semibold text-gray-500 pb-2">
+              <li className="text-lg font-semibold text-gray-500 dark:text-gray-400 pb-2">
                 Đánh giá ({reviews.length})
               </li>
             </ul>

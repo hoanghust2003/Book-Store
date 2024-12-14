@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
 
 .tiptap p.is-editor-empty:first-child::before {
     color: #11181c;
@@ -60,4 +65,16 @@
   .dark .slick-next::before,
   .dark .slick-prev::before {
     color: #faf7f2 !important;
+  }
+
+  .dark .bg-white {
+    background-color: #1a202c; /* Dark background */
+  }
+  
+  .dark .text-black {
+    color: #f7fafc; /* Light text */
+  }
+  
+  .dark .border-gray-200 {
+    border-color: #2d3748; /* Dark border */
   }
