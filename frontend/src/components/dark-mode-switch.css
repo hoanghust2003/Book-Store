@@ -1,0 +1,16 @@
+
+.dark-mode-switch .nextui-switch {
+  transition: transform 0.3s ease;
+}
+
+.dark-mode-switch .nextui-switch.is-selected {
+  transform: translateX(20px);
+}
+
+.nextui-switch .nextui-switch-handle {
+  border-radius: 50%;
+}
+
+.nextui-switch .nextui-switch-inner {
+  border-radius: 50%;
+}

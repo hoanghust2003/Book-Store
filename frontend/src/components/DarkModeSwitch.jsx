@@ -1,32 +1,28 @@
+import { Switch } from '@nextui-org/react';
 import React, { useState, useEffect } from 'react';
 import { IoMoon, IoSunnyOutline } from 'react-icons/io5';
-
+import './dark-mode-switch.css'
 const DarkModeSwitch = () => {
-    const [isDarkMode, setIsDarkMode] = useState(() => {
-        // Retrieve the dark mode setting from localStorage
-        const savedMode = localStorage.getItem('darkMode');
-        return savedMode === 'true' || false;
-      });
+    const [darkMode, setDarkMode] = useState(false)
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    // Save the dark mode setting to localStorage
-    localStorage.setItem('darkMode', isDarkMode);
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
+    const enableDarkMode = () => {}
+    const disableDarkMode = () => {}
   return (
-    <button onClick={toggleDarkMode} className="p-2">
-      {isDarkMode ? <IoMoon size={24} /> : <IoSunnyOutline size={24} />}
-    </button>
-  );
+    <div className="dark-mode-switch">
+      <Switch
+        size="lg"
+        color="success"
+        startContent={<IoSunnyOutline />}
+        endContent={<IoMoon />}
+        isSelected={darkMode}
+        onChange={(e)=>{
+          const {checked} = e.target
+          if (checked) enableDarkMode()
+            else disableDarkMode()
+        }}
+      />
+    </div>
+  )
 };
 
 export default DarkModeSwitch;

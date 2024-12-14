@@ -25,7 +25,7 @@ const TopSellers = () => {
 
   return (
     <div className='py-10 bg-white dark:bg-gray-900 text-black dark:text-white max-w-screen-xl mx-auto' >
-      <h2 className='text-3xl font-semibold mb-6'>TOP SELLERS</h2>
+      <h2 className='text-3xl font-semibold mb-6'>SÁCH BÁN CHẠY</h2>
       {/*category */}
       <div className='mb-8 flex items-center'>
         <select 
