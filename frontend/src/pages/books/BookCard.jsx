@@ -13,12 +13,12 @@ const BookCard = ({book}) => {
   return (
     <div className=" rounded-lg transition-shadow duration-300 bg-white dark:bg-gray-800 text-black dark:text-white font-roboto">
       <div className="flex flex-col sm:flex-row sm:items-stretch gap-4">
-        <div className="sm:h-72 sm:flex-shrink-0 border rounded-md">
+        <div className="sm:h-72 sm:flex-shrink-0 overflow-hidden border rounded-md transition-all duration-300 ease-in-out transform hover:scale-105 border-gray-300 dark:border-gray-600">
           <Link to={`/books/${book._id}`}>
             <img
               src={`${getImgUrl(book?.coverImage)}`}
               alt=""
-              className="w-full bg-cover p-2 rounded-md cursor-pointer hover:scale-105 transition-all duration-200"
+              className="w-full h-full object-cover transition-all duration-200"
             />
           </Link>
         </div>
@@ -40,7 +40,7 @@ const BookCard = ({book}) => {
           </p>
           <button 
           onClick={() => handleAddToCart(book)}
-          className="btn-primary inline-flex items-center gap-2 px-4 py-2 text-lg rounded-lg ">
+          className="bg-blue-600 text-white px-6 py-3 flex items-center gap-2 w-full lg:w-auto mt-4 ">
             <FiShoppingCart className="text-x1" />
             <span>Thêm vào giỏ</span>
           </button>

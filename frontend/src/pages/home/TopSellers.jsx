@@ -12,33 +12,46 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-const categories = ["Choose a genre", "Business","Fiction","Horror","Adventure"]
+// Import MUI components
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
+const categories = ["Thể loại", "Business","Fiction","Horror","Adventure"]
 const TopSellers = () => {
   
-  const [selectedCategory,setSelectedCategory] = useState("Choose a genre");
+  const [selectedCategory,setSelectedCategory] = useState("Chọn thể loại");
 
   const { data: fetchedBooks = [] } = useFetchAllBooksQuery();
 
-  const filteredBooks = selectedCategory === "Choose a genre" ? fetchedBooks : fetchedBooks.filter(book =>
+  const filteredBooks = selectedCategory === "Chọn thể loại" ? fetchedBooks : fetchedBooks.filter(book =>
     book.category === selectedCategory.toLowerCase()
   )
 
   return (
-    <div className='py-10 bg-white dark:bg-gray-900 text-black dark:text-white max-w-screen-xl mx-auto' >
+    <div className='py-10 max-w-screen-xl mx-auto' >
       <h2 className='text-3xl font-semibold mb-6'>SÁCH BÁN CHẠY</h2>
-      {/*category */}
-      <div className='mb-8 flex items-center'>
-        <select 
-        onChange={(e) => setSelectedCategory(e.target.value)}
-        name="category" id="category" className='border
-        border-gray-300 rounded-md px-4 py-2 focus:outline-none bg-white dark:bg-gray-900 text-black dark:text-white'>
-          {
-            categories.map((category,index) => (
-              <option key={index} value={category}>{category}</option>
-            ))
-          }
-        </select>
-      </div>
+      {/* Material UI Select for category */}
+      <Box sx={{  minWidth: 120, maxWidth: 150, marginBottom: 4 }}>
+        <FormControl fullWidth>
+          <InputLabel id="category-select-label">Thể loại</InputLabel>
+          <Select
+            labelId="category-select-label"
+            id="category-select"
+            value={selectedCategory}
+            label="Thể loại"
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((category, index) => (
+              <MenuItem key={index} value={category}>
+                {category}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
       <Swiper
                 slidesPerView={2}

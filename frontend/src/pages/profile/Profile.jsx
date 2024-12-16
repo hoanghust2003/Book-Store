@@ -54,19 +54,19 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Profile</h2>
+    <div className="max-w-lg mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Profile</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Name</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Name</label>
           <input
             type="text"
             {...register('name', { required: true })}
-            className="p-2 border w-full rounded-md focus:outline-none focus:ring focus:border-blue-300"
+            className="p-2 border w-full rounded-md focus:outline-none focus:ring focus:border-blue-300 dark:bg-gray-700 dark:text-gray-200"
           />
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-semibold text-gray-700">Avatar</label>
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">Avatar</label>
           <input
             type="file"
             accept="image/*"
