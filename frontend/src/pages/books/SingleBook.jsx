@@ -13,6 +13,11 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 import HomeIcon from '@mui/icons-material/Home';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import ReviewForm from "./ReviewForm";
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+
 function handleClick(event) {
   event.preventDefault();
   console.info('You clicked a breadcrumb.');
@@ -23,27 +28,44 @@ const SingleBook = () => {
   const { data: book, isLoading, isError } = useFetchBookByIdQuery(id);
   const { data: reviews = [], refetch } = useGetPublicReviewsQuery(id);
   const dispatch = useDispatch();
+  const [showReviewForm, setShowReviewForm] = useState(false)
+  const [value, setValue] = React.useState('details');
 
-  // useEffect(() => {
-  //   const fetchReviews = async () => {
-  //     try {
-  //       const response = await fetch(`/api/reviews/${id}`);
-  //       const data = await response.json();
-  //       setReviews(data);
-  //     } catch (error) {
-  //       console.error("Error fetching reviews:", error);
-  //     }
-  //   };
-
-  //   fetchReviews();
-  // }, [id]);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   useEffect(() => {
-    refetch(); // Refetch reviews
-  }, [refetch]);
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch(`/api/reviews/${id}`);
+
+        // Kiểm tra nếu response không hợp lệ
+        if (!response.ok) {
+          console.error(`Failed to fetch reviews: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setReviews(data.reviews || []); // Đảm bảo `data.reviews` tồn tại
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
+  };
+
+  const handleReviewSubmit = () => {
+    refetch(); // Refresh reviews after submitting
+    setShowReviewForm(false); // Close the form
+  };
+  const formatPrice = (price) => {
+    return price.toLocaleString('vi-VN'); // Định dạng giá theo kiểu Việt Nam
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -82,20 +104,30 @@ const SingleBook = () => {
         </Breadcrumbs>
       </div>
 
+      <div className="max-w-10xl mx-auto shadow-md p-5 bg-white dark:bg-gray-800 flex">
+        <div className="sticky top-20 w-full md:w-1/3">
+          <img
+            src={getImgUrl(book.coverImage)}
+            alt={book.title}
+            className="w-full h-auto mb-8"
+          />
+          <button
+            onClick={() => handleAddToCart(book)}
+            className="bg-blue-600 text-white px-6 py-3 flex items-center gap-2 w-full lg:w-auto mt-4 rounded-lg border border-gray-300"
+          >
+            <FiShoppingCart className="text-lg" />
+            <span>Thêm vào giỏ hàng</span>
+          </button>
+          <ul className="mt-4 text-sm text-gray-600 space-y-2">
+            <li>🚚 <strong>Giao hàng:</strong> Nhanh và uy tín</li>
+            <li>🔄 <strong>Đổi trả:</strong> Miễn phí toàn quốc</li>
+            <li>🎁 <strong>Ưu đãi:</strong> Giảm giá cho số lượng lớn</li>
+          </ul>
+          
+        </div>
 
-      <div className="max-w-10xl mx-auto shadow-md p-5 bg-white dark:bg-gray-800">
-        {/* <h1 className="text-2xl font-bold mb-6">{book.title}</h1> */}
-
-        <div className="flex flex-col md:flex-row md:items-center">
-          <div>
-            <img
-              src={getImgUrl(book.coverImage)}
-              alt={book.title}
-              className="w-full h-auto mb-8 "
-            />
-          </div>
-
-          <div className="md:w-1/2 md:pl-8">
+        <div className="md:w-2/3 md:pl-8">
+        <div className="mt-4">
             <p className="text-gray-700 dark:text-gray-300 mb-2">
               <strong>Tác giả:</strong> {book.author || "admin"}
             </p>
@@ -109,49 +141,75 @@ const SingleBook = () => {
             <p className="text-gray-700 dark:text-gray-300 mb-4">
               <strong>Tóm tắt nội dung:</strong> {book.description}
             </p>
-
-            {/* Pricing and Add to Cart Button */}
             <div className="flex items-center space-x-4">
               <div className="text-lg text-red-500 font-bold">
-                {book.newPrice} VND
+                {formatPrice(book.newPrice)} VND
               </div>
               {
                 <div className="text-sm text-gray-500 line-through dark:text-gray-400">
-                  {book.oldPrice} VND
+                  {formatPrice(book.oldPrice)} VND
                 </div>
               }
             </div>
-            <button
-              onClick={() => handleAddToCart(book)}
-              className="bg-blue-600 text-white px-6 py-3 flex items-center gap-2 w-full lg:w-auto mt-4"
-            >
-              <FiShoppingCart className="text-lg" />
-              <span>Thêm vào giỏ hàng</span>
-            </button>
           </div>
-        </div>
+          <Box sx={{ width: '100%', mt: 10 }}>
+            <Tabs value={value} onChange={handleChange} textColor="secondary" indicatorColor="secondary" aria-label="secondary tabs example">
+              <Tab value="more details" label="Thông tin chi tiết" />
+              <Tab value="details" label="Mô tả sản phẩm" />
+              <Tab value="reviews" label={`Đánh giá (${reviews.length})`} />
+            </Tabs>
+          </Box>
+          {value === 'more details' && (
+            <div className="mt-10">
+              <h2 className="text-2xl font-bold mb-6">Thông tin chi tiết</h2>
+              <div className="grid grid-cols-3 gap-4 text-gray-700 dark:text-gray-300">
+                <div className="font-semibold">Mã hàng:</div>
+                <div className="col-span-2">{book.sku || "8935235226272"}</div>
 
-        {/* Tabs for Details, Reviews, and Recommendations */}
-        <div className="mt-10">
-          <div className="border-b border-gray-200 dark:border-gray-700 mb-5">
-            <ul className="flex space-x-10 justify-center">
-              <li className="text-lg font-semibold text-primary border-b-2 border-primary pb-2">
-                Chi tiết sản phẩm
-              </li>
-              <li className="text-lg font-semibold text-gray-500 dark:text-gray-400 pb-2">
-                Đánh giá ({reviews.length})
-              </li>
-            </ul>
-          </div>
+                <div className="font-semibold">Tác giả:</div>
+                <div className="col-span-2">{book.author || "Paulo Coelho"}</div>
 
-          {/* Review Section */}
-          <div className="space-y-6">
-            <ReviewSection id={book?._id} title="Reviews" reviews={reviews} />
-          </div>
+                <div className="font-semibold">Nhà cung cấp:</div>
+                <div className="col-span-2">{book.publisher || "Nhà Nam"}</div>
+
+                <div className="font-semibold">Ngày xuất bản:</div>
+                <div className="col-span-2">{new Date(book.createdAt).toLocaleDateString()}</div>
+
+                <div className="font-semibold">Kích thước:</div>
+                <div className="col-span-2">{book.size || "20.5 x 13 cm"}</div>
+
+                <div className="font-semibold">Trọng lượng:</div>
+                <div className="col-span-2">{book.weight || "220 g"}</div>
+
+                <div className="font-semibold">Số trang:</div>
+                <div className="col-span-2">{book.pages || "227"}</div>
+
+                <div className="font-semibold">Hình thức:</div>
+                <div className="col-span-2">{book.format || "Bìa mềm"}</div>
+              </div>
+            </div>
+          )}
+
+
+          {value === 'details' && (
+            <div className="mt-10">
+              <h2 className="text-2xl font-bold mb-6"></h2>
+              {book.longDescription.split('\n\n').map((paragraph, index) => (
+                <p key={index} className="text-gray-700 dark:text-gray-300 mb-4">{paragraph}</p>
+              ))}
+            </div>
+          )}
+
+          {value === 'reviews' && (
+            <div className="mt-10">
+              <h2 className="text-2xl font-bold mb-6">Đánh giá</h2>
+              <ReviewForm bookId={id} onSubmitSuccess={handleReviewSubmit} />
+              {/* <ReviewSection id={book?._id} title="Reviews" reviews={reviews} /> */}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Recommend Section */}
       <div className="mt-10">
         <RecommendSection category={book?.category} />
       </div>

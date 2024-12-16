@@ -10,6 +10,11 @@ const BookCard = ({book}) => {
   const handleAddToCart = (product) => {
     dispatch(addToCart(product))
   }
+
+  const formatPrice = (price) => {
+    if (isNaN(price)) return ""; // Trả về rỗng nếu không phải là số hợp lệ
+    return Number(price).toLocaleString('vi-VN'); // Định dạng giá theo kiểu Việt Nam
+  };
   return (
     <div className=" rounded-lg transition-shadow duration-300 bg-white dark:bg-gray-800 text-black dark:text-white font-roboto">
       <div className="flex flex-col sm:flex-row sm:items-stretch gap-4">
@@ -34,13 +39,13 @@ const BookCard = ({book}) => {
             .slice(0, 165)}...` : book?.description
           }</p>
           <p className="font-medium mb-5">
-            {book?.newPrice} VNĐ <span className="line-through font-normal ml-2">
-                {book?.oldPrice} VNĐ
+            {formatPrice(book.newPrice)} VNĐ <span className="line-through font-normal ml-2">
+                {formatPrice(book.oldPrice)} VNĐ
             </span>
           </p>
           <button 
           onClick={() => handleAddToCart(book)}
-          className="bg-blue-600 text-white px-6 py-3 flex items-center gap-2 w-full lg:w-auto mt-4 ">
+          className="bg-blue-600 text-white px-6 py-3 flex items-center gap-2 w-full lg:w-auto mt-4 rounded-lg border border-gray-300">
             <FiShoppingCart className="text-x1" />
             <span>Thêm vào giỏ</span>
           </button>

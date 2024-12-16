@@ -27,7 +27,7 @@ const ReviewSection = ({ id, title, reviews }) => {
             <div key={review.id}>
               <div className="flex items-center space-x-3">
                 <img
-                  src={review.user.avatar?.url}
+                  src={review.user.avatar?.url || defaultAvatar}
                   alt={review.user.name}
                   className="w-10 h-10 rounded-full"
                 />

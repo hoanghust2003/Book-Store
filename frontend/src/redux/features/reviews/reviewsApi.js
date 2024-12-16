@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import getBaseUrl from '../../../utils/baseURL';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${getBaseUrl()}/api/review`,
+  baseUrl: `${getBaseUrl()}/api/reviews`,
   credentials: 'include',
   prepareHeaders: (headers) => {
     const token = localStorage.getItem('token');
@@ -24,11 +24,11 @@ const reviewsApi = createApi({
         method: 'POST',
         body: newReview,
       }),
-      invalidatesTags: ['Reviews'],
+      invalidatesTags: [{ type: 'Reviews', id: 'LIST' }], 
     }),
     getReviewsByBookId: builder.query({
       query: (bookId) => `/${bookId}`,
-      providesTags: ['Reviews'],
+      providesTags: (result, error, bookId) => [{ type: 'Reviews', id: bookId }],
     }),
     getPublicReviews: builder.query({
       query: (bookId) => `/list/${bookId}`,

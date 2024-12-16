@@ -9,6 +9,9 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    longDescription:  {
+        type: String,
+    },
     category:  {
         type: String,
         required: true,
@@ -35,6 +38,27 @@ const bookSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+    },
+    author : {
+        type : String
+    },
+    sku : {
+        type : String
+    },
+    publisher : {
+        type : String
+    },
+    size : {
+        type : String
+    },
+    weight : {
+        type : String
+    },
+    pages : {
+        type : String
+    },
+    format : {
+        type : String
     }
   }, {
     timestamps: true,

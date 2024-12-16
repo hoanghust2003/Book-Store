@@ -17,7 +17,7 @@ import Profile from '../pages/profile/Profile';
 import SingleBook from "../pages/books/SingleBook";
 import PrivateRoute from "./PrivateRoute";
 import OrderPage from "../pages/books/OrderPage";
-
+import AllBooksPage from "../pages/books/AllBooksPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/books",
+        element: <AllBooksPage />,
       },
       {
         path: "/orders",

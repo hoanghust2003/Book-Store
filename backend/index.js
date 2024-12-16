@@ -11,7 +11,7 @@ require('dotenv').config()
 // middleware
 app.use(express.json());
 app.use(cors({
-    origin: ['http://localhost:5175', 'https://book-app-frontend-tau.vercel.app'],
+    origin: ['http://localhost:5173', 'https://book-app-frontend-tau.vercel.app','http://localhost:5174'],
     credentials: true
 }))
 app.use(express.urlencoded({extended: false}))
@@ -50,6 +50,10 @@ app.use("/test",fileParser,(req,res) => {
   
   res.json({})
 })
+
+app.use("/", (req, res) => {
+  res.json({ message: "Book Store Server is running!" });
+});
 
 async function main() {
   await mongoose.connect(process.env.DB_URL);

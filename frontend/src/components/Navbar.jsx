@@ -3,11 +3,72 @@ import { Link } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import { HiOutlineUser, HiOutlineHeart, HiOutlineShoppingCart } from "react-icons/hi";
 import DarkModeSwitch from "./DarkModeSwitch";
-
+import { Menu, MenuItem, Button, Box } from "@mui/material"
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import logo from "../assets/footer-logo.png";
 import avatarImg from "../assets/avatar.png";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
+
+const DropdownMenu = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const categories = [
+    {
+      title: "Sách",
+      items: ["All Books","Business", "Fiction", "Horror", "Adventure"],
+    }
+    
+  ];
+
+  return (
+    <Box>
+      <Button
+        onClick={handleOpen}
+        sx={{
+          color: "white",
+          fontWeight: "bold",
+          textTransform: "none",
+        }}
+      >
+        <MenuBookIcon sx={{ mr: 0.5 }} fontSize="large" />
+      </Button>
+
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        transformOrigin={{ vertical: "top", horizontal: "left" }}
+        PaperProps={{
+          style: { maxHeight: 400, width: "300px" },
+        }}
+      >
+        {categories.map((category) => (
+    <div key={category.title}>
+      <h3 style={{ padding: "8px 16px", fontWeight: "bold" }}>{category.title}</h3>
+      {category.items.map((item) => (
+        <MenuItem key={item} onClick={handleClose}>
+          <Link to={`/${item === "All Books" ? "books" : item.toLowerCase().replace(/\s+/g, "-")}`}>
+            {item}
+          </Link>
+        </MenuItem>
+            ))}
+          </div>
+        ))}
+      </Menu>
+    </Box>
+  );
+};
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,11 +80,8 @@ const Navbar = () => {
     { name: "Orders", href: "/orders" },
     { name: "Cart Page", href: "/cart" },
     { name: "Check Out", href: "/checkout" },
+    { name: "All Books", href: "/books" }
   ];
-
-  const navigation2 = [
-    {name: "Mua Sách", href: "/books"}
-  ]
 
   const handleLogOut = () => {
     logout();
@@ -41,6 +99,8 @@ const Navbar = () => {
             </Link>
             <p className="text-sm italic">"Nơi hội tụ tri thức và cảm hứng"</p>
           </div>
+          {/* Dropdown Menu */}
+          <DropdownMenu />
         </div>
         {/* Menu chính */}
         {/* <ul className="hidden md:flex space-x-8">

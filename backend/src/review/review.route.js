@@ -9,7 +9,6 @@ reviewRouter.post(
   '/',
   isAuth,
   validate(newReviewSchema),
-  isPurchasedByTheUser,
   addReview
 );
 reviewRouter.get('/:bookId', isAuth, getReview);
