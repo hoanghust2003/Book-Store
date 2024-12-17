@@ -40,6 +40,7 @@ const generateAuthLink = async (req, res) => {
     await mail.sendVerificationMail({
       link,
       to: user.email,
+      name: user.name || user.email,
     });
 
     console.log(req.body);
@@ -69,13 +70,28 @@ const verifyAuthToken = async (req, res) => {
   }
 
   //if userId is in out database or not
-  const user = await UserModel.findById(userId)
-  if (!user){
-    return sendErrorResponse({
-      status: 500,
-      message: "User not found.",
-      res
-    })
+  // const user = await UserModel.findById(userId)
+  // if (!user){
+  //   return sendErrorResponse({
+  //     status: 500,
+  //     message: "User not found.",
+  //     res
+  //   })
+  // }
+
+  // Tìm người dùng trong cơ sở dữ liệu
+  let user = await UserModel.findById(userId);
+  if (!user) {
+    // Nếu người dùng không tồn tại, tạo mới và lưu vào cơ sở dữ liệu
+    user = new UserModel({
+      _id: userId,
+      email: verificationToken.email, // Giả sử bạn đã lưu email trong token
+      username: verificationToken.username, // Giả sử bạn đã lưu username trong token
+      password: verificationToken.password, // Giả sử bạn đã lưu password trong token
+      name: verificationToken.name,
+      role: 'user',
+    });
+    await user.save();
   }
 
   //invalidate token that we already verified
@@ -172,7 +188,7 @@ const registerUser = async (req, res) => {
     // Assign a default username if not provided
     const uniqueUsername = username || `user_${Date.now()}`;
 
-    // create new user
+    // create new user object but do not save to database
     const newUser = new UserModel({
       name,
       email,
@@ -181,26 +197,27 @@ const registerUser = async (req, res) => {
       role: 'user',
     });
 
-    // save new user to database
-    await newUser.save();
-
     const userId = newUser._id;
-    //delete old token if exist
+    // delete old token if exist
     await VerificationTokenModel.findOneAndDelete({ userId });
 
     // create random token for auth
-    const randomToken = crypto.randomBytes(36).toString("hex")
+    const randomToken = crypto.randomBytes(36).toString("hex");
 
-    //save token to database
+    // save token to database
     await VerificationTokenModel.create({
-      userId: newUser._id,
+      userId,
       token: randomToken,
-    })
+      email: newUser.email,
+      username: newUser.username,
+      password: newUser.password,
+      name: newUser.name 
+    });
 
-    //create link for auth
-    const verificationLink = `${process.env.VERIFICATION_LINK}?token=${randomToken}&userId=${userId}`
+    // create link for auth
+    const verificationLink = `${process.env.VERIFICATION_LINK}?token=${randomToken}&userId=${userId}`;
 
-    //send email for auth
+    // send email for auth
     await mail.sendVerificationMail({
       link: verificationLink,
       to: newUser.email,
@@ -208,7 +225,7 @@ const registerUser = async (req, res) => {
 
     console.log(req.body);
 
-    res.status(201).json({ message: "Register Success!", user: newUser });
+    res.status(201).json({ message: "Verification email sent!", user: newUser });
   } catch (error) {
     console.error("Error registering user", error);
     res.status(500).json({ message: "Register Fail!" });
@@ -242,5 +259,5 @@ module.exports = {
     logout,
     updateProfile,
     registerUser,
-    loginUser
+    loginUser,
 }

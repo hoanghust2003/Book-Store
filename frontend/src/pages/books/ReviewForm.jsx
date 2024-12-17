@@ -31,12 +31,15 @@ const ReviewForm = ({ bookId, onSubmitSuccess }) => {
     if (!selectedRatings.length)
       return toast.error("Please select some rating!");
 
+    if (!content.trim())  // Kiểm tra content không được rỗng
+    return toast.error("Please write something in the review!");
+    
     try {
       setLoading(true);
       await addReview({
         bookId,
         rating: selectedRatings.length,
-        content,
+        content: content.trim(),
       }).unwrap();
 
       toast.success("Thanks for leaving a rating.");

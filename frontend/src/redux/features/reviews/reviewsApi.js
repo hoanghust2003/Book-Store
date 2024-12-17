@@ -32,7 +32,7 @@ const reviewsApi = createApi({
     }),
     getPublicReviews: builder.query({
       query: (bookId) => `/list/${bookId}`,
-      providesTags: ['Reviews'],
+      // providesTags: ['Reviews'],
     }),
   }),
 });

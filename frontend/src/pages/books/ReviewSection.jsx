@@ -1,22 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
-const ReviewSection = ({ id, title, reviews }) => {
-  if (!reviews.length)
-    return (
-      <div className="pb-20">
-        <h2 className="text-2xl font-bold mb-6">{title}</h2>
-        <div className="mt-6">
-          <p className="text-xl">
-            Be the first to{" "}
-            <Link to={`/rate/${id}`} className="underline font-semibold">
-              add a review
-            </Link>
-          </p>
-        </div>
-      </div>
-    );
+const ReviewSection = ({ id, title }) => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await axios.get(`/api/reviews/list/${id}`);
+        setReviews(Array.isArray(response.data) ? response.data : []);
+      } catch (error) {
+        console.error("Failed to fetch reviews:", error);
+      }
+    };
+
+    fetchReviews();
+  }, [id]);
 
   return (
     <div className="pb-20">
@@ -40,7 +41,7 @@ const ReviewSection = ({ id, title, reviews }) => {
                 </div>
               </div>
               <div className="pl-10">
-                <p>{review.content}</p>
+                <p dangerouslySetInnerHTML={{ __html: review.content }}>{console.log(review.content)}</p>
               </div>
             </div>
           );

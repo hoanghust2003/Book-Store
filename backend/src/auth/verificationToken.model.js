@@ -13,7 +13,11 @@ const verificationTokenSchema = new model.Schema({
         type: Date,
         default: Date.now(),
         expires: 60 * 60 * 24
-    }
+    },
+    email: { type: String, required: true },
+  username: { type: String, required: true },
+  password: { type: String, required: true },
+  name: { type: String, required: true },
 })
 
 verificationTokenSchema.pre('save', function(next){

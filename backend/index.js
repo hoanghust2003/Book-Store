@@ -41,7 +41,7 @@ app.use("/api/books", bookRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/auth", userRoutes)
 app.use("/api/admin", adminRoutes)
-app.use("/api/review",reviewRoutes)
+app.use("/api/reviews",reviewRoutes)
 app.use("/auth",authRouter)
 
 app.use("/test",fileParser,(req,res) => {

@@ -4,7 +4,10 @@ const { Types, isValidObjectId } = require('mongoose');
 
 const addReview = async (req, res) => {
   const { bookId, rating, content } = req.body;
-
+  // Kiểm tra content không rỗng hoặc chỉ có khoảng trắng
+  if (!content || !content.trim()) {
+    return res.status(400).json({ message: "Content cannot be empty!" });
+  }
   try {
     await ReviewModel.findOneAndUpdate(
       { book : bookId, user: req.user.id },
@@ -57,26 +60,12 @@ const getReview = async (req, res) => {
 };
 
 const getPublicReviews = async (req, res) => {
-  const reviews = await ReviewModel.find({ bookId: req.params.bookId }).populate({
-    path: "user",
-    select: "name avatar",
-  });
-
-  res.json({
-    reviews: reviews.map((r) => {
-      return {
-        id: r._id,
-        content: r.content,
-        date: r.createdAt.toISOString().split("T")[0],
-        rating: r.rating,
-        user: {
-          id: r.user._id,
-          name: r.user.name,
-          avatar: r.user.avatar,
-        },
-      };
-    }),
-  });
+  try {
+    const reviews = await ReviewModel.find({ book: req.params.bookId }).populate('user', 'name avatar');
+    res.json(reviews);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch reviews' });
+  }
 };
 
 module.exports = {

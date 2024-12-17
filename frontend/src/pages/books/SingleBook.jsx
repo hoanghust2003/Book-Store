@@ -35,26 +35,28 @@ const SingleBook = () => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch(`/api/reviews/${id}`);
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     try {
+  //       const response = await fetch(`/api/reviews/list/${id}`);
 
-        // Kiểm tra nếu response không hợp lệ
-        if (!response.ok) {
-          console.error(`Failed to fetch reviews: ${response.status}`);
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  //       // Kiểm tra nếu response không hợp lệ
+  //       if (!response.ok) {
+  //         console.error(`Failed to fetch reviews: ${response.status}`);
+  //         const text = await response.text(); // Log response text để kiểm tra lỗi
+  //         console.error("Response:", text);
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
 
-        const data = await response.json();
-        setReviews(data.reviews || []); // Đảm bảo `data.reviews` tồn tại
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-      }
-    };
+  //       const data = await response.json();
+  //       setReviews(data.reviews || []); // Đảm bảo `data.reviews` tồn tại
+  //     } catch (error) {
+  //       console.error("Error fetching reviews:", error);
+  //     }
+  //   };
 
-    fetchReviews();
-  }, [id]);
+  //   fetchReviews();
+  // }, [id]);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
@@ -62,7 +64,7 @@ const SingleBook = () => {
 
   const handleReviewSubmit = () => {
     refetch(); // Refresh reviews after submitting
-    setShowReviewForm(false); // Close the form
+    // setShowReviewForm(false); // Close the form
   };
   const formatPrice = (price) => {
     return price.toLocaleString('vi-VN'); // Định dạng giá theo kiểu Việt Nam
@@ -204,7 +206,7 @@ const SingleBook = () => {
             <div className="mt-10">
               <h2 className="text-2xl font-bold mb-6">Đánh giá</h2>
               <ReviewForm bookId={id} onSubmitSuccess={handleReviewSubmit} />
-              {/* <ReviewSection id={book?._id} title="Reviews" reviews={reviews} /> */}
+               <ReviewSection id={book?._id} title="Reviews" reviews={reviews} /> 
             </div>
           )}
         </div>

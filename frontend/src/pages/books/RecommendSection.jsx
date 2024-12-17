@@ -6,33 +6,16 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation"; // Import the custom CSS file
 import "../../App.css";
+import { useFetchAllBooksQuery } from "../../redux/features/books/booksApi";
 const RecommendSection = ({ category }) => {
-  const [fetching, setFetching] = useState(true);
-  const [books, setBooks] = useState([]);
-
-  useEffect(() => {
-    if (!category) return;
-
-    const fetchBooks = async () => {
-      try {
-        const response = await fetch("/books.json");
-        const data = await response.json();
-        const filteredBooks = data.filter(book => book.category === category);
-        setBooks(filteredBooks);
-        console.log("Filtered books:", filteredBooks); // Debugging line
-      } catch (error) {
-        console.error("Error fetching books:", error);
-      } finally {
-        setFetching(false);
-      }
-    };
-
-    fetchBooks();
-  }, [category]);
+  const { data: books = [], isLoading, isError } = useFetchAllBooksQuery();
 
   if (!category) return null;
 
-  if (fetching) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error fetching books</div>;
+
+  const filteredBooks = books.filter(book => book.category === category);
 
   return (
     <div>

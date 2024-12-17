@@ -3,7 +3,8 @@ const {emailValidationSchema, validate, newUserSchema,updateUserSchema} = requir
 const authRouter = express.Router();
 const {isAuth} = require("../middleware/auth")
 const fileParser = require("../middleware/file")
-const {generateAuthLink, verifyAuthToken,sendProfileInfo, logout, updateProfile, registerUser, loginUser} = require("./auth.controller")
+const {generateAuthLink, verifyAuthToken,sendProfileInfo, logout, updateProfile, registerUser, loginUser} = require("./auth.controller");
+const { verify } = require("jsonwebtoken");
 authRouter.post(
   "/generate-link",
   validate(emailValidationSchema),

@@ -24,12 +24,25 @@ export const AuthProvide = ({children}) => {
     //     return await createUserWithEmailAndPassword(auth, email, password);
     // }
     const registerUser = async (name, email, password) => {
-        const response = await axios.post(`${getBaseUrl()}/auth/register`, { name, email, password }, {
-            headers: {
-                'Content-Type': 'application/json',
+        console.log("Registering user with details:", { name, email, password });
+        try {
+            const response = await axios.post(`${getBaseUrl()}/auth/register`, { name, email, password }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            console.log("Registration successful:", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("Error registering user:", error);
+            if (error.response) {
+                console.error("Error response data:", error.response.data);
+                console.error("Error response status:", error.response.status);
+                console.error("Error response headers:", error.response.headers);
             }
-        });
-        return response.data;
+            console.log("Failed registration details:", { name, email, password });
+            throw error;
+        }
     }
 
     // login the user
