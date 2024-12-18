@@ -103,10 +103,24 @@ export const AuthProvide = ({children}) => {
     // const logout = () => {
     //     return signOut(auth)
     // }
-    const logout = () => {
-        setCurrentUser(null);
-        localStorage.removeItem('token');
-        localStorage.removeItem('tokenType');
+    const logout = async () => {
+        try {
+            // Clear token before making the logout request
+            localStorage.removeItem('token');
+            localStorage.removeItem('tokenType');
+            document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    
+            await axios.post(`${getBaseUrl()}/auth/logout`, {}, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+        } catch (error) {
+            console.error('Failed to log out:', error);
+        } finally {
+            setCurrentUser(null);
+            window.location.href = '/login'; // Redirect to login page after logout
+        }
     }
 
     // manage user

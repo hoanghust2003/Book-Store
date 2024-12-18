@@ -37,12 +37,14 @@ const getOrderByEmail = async (req, res) => {
 // Tạo URL thanh toán VNPay
 const createPaymentUrl = async (req, res) => {
   const { orderId } = req.body;
+  
   try {
+    console.log(orderId)
     const order = await Order.findById(orderId);
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
-
+    console.log(order)
     const tmnCode = vnpayConfig.vnp_TmnCode;
     const secretKey = vnpayConfig.vnp_HashSecret;
     const vnpUrl = vnpayConfig.vnp_Url;
@@ -57,6 +59,9 @@ const createPaymentUrl = async (req, res) => {
     const orderInfo = `Thanh toan don hang ${order._id}`;
     const amount = order.totalPrice * 100;
     const orderIdVNPay = order._id.toString();
+
+    // Lấy địa chỉ IP hợp lệ
+    const ipAddr = req.headers['x-forwarded-for'] || req.connection.remoteAddress || '127.0.0.1';
 
     let vnp_Params = {
       vnp_Version: '2.1.0',
@@ -80,6 +85,7 @@ const createPaymentUrl = async (req, res) => {
     vnp_Params.vnp_SecureHash = signed;
 
     const paymentUrl = `${vnpUrl}?${querystring.stringify(vnp_Params, { encode: false })}`;
+    console.log(paymentUrl)
     res.status(200).json({ paymentUrl });
   } catch (error) {
     console.error('Error creating payment URL', error);
@@ -89,9 +95,11 @@ const createPaymentUrl = async (req, res) => {
 
 // Xử lý callback khi VNPay trả về
 const handlePaymentReturn = async (req, res) => {
-  const vnp_Params = req.query;
+  let vnp_Params = req.body;
+  //console.log("Received vnp_Params:", vnp_Params);
 
   const secureHash = vnp_Params['vnp_SecureHash'];
+  console.log('SecureHash từ VNPay:', secureHash);
   delete vnp_Params['vnp_SecureHash'];
   delete vnp_Params['vnp_SecureHashType'];
 
@@ -100,23 +108,30 @@ const handlePaymentReturn = async (req, res) => {
   const secretKey = vnpayConfig.vnp_HashSecret;
   const hmac = crypto.createHmac('sha512', secretKey);
   const signed = hmac.update(Buffer.from(signData, 'utf-8')).digest('hex');
-
   if (secureHash === signed) {
     const orderId = vnp_Params['vnp_TxnRef'];
     const order = await Order.findById(orderId);
-
+    console.log("signed==hash")
     if (order) {
+      //console.log(order)
+      const responseCode = vnp_Params['vnp_ResponseCode'];
+      console.log('VNPay Response Code:', responseCode);
       order.paymentStatus = vnp_Params['vnp_ResponseCode'] === '00' ? 'Paid' : 'Failed';
+      //console.log(vnp_Params['vnp_ResponseCode'])
       order.paymentInfo = {
         transactionId: vnp_Params['vnp_TransactionNo'],
         vnpResponseCode: vnp_Params['vnp_ResponseCode'],
         bankCode: vnp_Params['vnp_BankCode'],
         paymentDate: vnp_Params['vnp_PayDate'],
       };
+      //console.log(order.paymentInfo)
       await order.save();
       return res.status(200).json({ message: 'Payment success', order });
     }
   }
+
+  console.log('SecureHash từ VNPay:', secureHash);
+  console.log('SecureHash tính lại:', signed);
 
   res.status(400).json({ message: 'Invalid signature' });
 };

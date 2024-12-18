@@ -18,7 +18,7 @@ authRouter.post(
 authRouter.post('/login', loginUser);
 authRouter.get('/verify',verifyAuthToken)
 authRouter.get('/profile',isAuth,sendProfileInfo)
-authRouter.post('/logout',isAuth,logout)
+authRouter.post('/logout',logout)
 authRouter.put('/profile',
   isAuth,
   fileParser,

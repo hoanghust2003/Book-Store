@@ -7,6 +7,7 @@ const {sendErrorResponse, formatUserProfile} = require("../utils/helper")
 const jwt = require("jsonwebtoken")
 const cloudinary = require("../cloud/cloudinary")
 const updateAvatarToCloudinary = require("../utils/fileUpload")
+const BlacklistedToken = require('./blacklistedToken.model');
 const generateAuthLink = async (req, res) => {
     // generate authentication link and send that link to the users email address
     /* 
@@ -69,16 +70,6 @@ const verifyAuthToken = async (req, res) => {
     })
   }
 
-  //if userId is in out database or not
-  // const user = await UserModel.findById(userId)
-  // if (!user){
-  //   return sendErrorResponse({
-  //     status: 500,
-  //     message: "User not found.",
-  //     res
-  //   })
-  // }
-
   // Tìm người dùng trong cơ sở dữ liệu
   let user = await UserModel.findById(userId);
   if (!user) {
@@ -122,9 +113,38 @@ const sendProfileInfo = (req,res) => {
   })
 }
 
-const logout = (req,res) => {
-  res.clearCookie('authToken').send()
-}
+const logout = async (req, res) => {
+  try {
+    // Lấy token từ cookie hoặc header
+    const token = req.cookies.authToken || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    
+    if (!token) {
+      return res.status(400).json({ message: 'No token provided' });
+    }
+
+    // Decode token để lấy thông tin hết hạn
+    const decoded = jwt.decode(token);
+
+    // Thêm token vào danh sách đen
+    await BlacklistedToken.create({
+      token,
+      expiresAt: new Date(decoded.exp * 1000),
+    });
+
+    // Xóa cookie authToken
+    res.clearCookie('authToken', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      sameSite: 'strict',
+      path: '/', // Đảm bảo xóa toàn bộ cookie trong path
+    });
+
+    res.status(200).json({ message: 'Logged out successfully' });
+  } catch (error) {
+    console.error('Failed to log out:', error);
+    res.status(500).json({ message: 'Failed to log out' });
+  }
+};
 
 const updateProfile = async (req,res) => {
   try {
