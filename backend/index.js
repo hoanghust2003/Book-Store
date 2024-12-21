@@ -27,30 +27,35 @@ app.use((req, res, next) => {
 
 // routes
 const bookRoutes = require('./src/books/book.route');
-const orderRoutes = require("./src/orders/order.route")
-const userRoutes =  require("./src/users/user.route")
-const adminRoutes = require("./src/stats/admin.stats")
-const reviewRoutes = require("./src/review/review.route")
-const authRouter = require("./src/auth/auth.route")
+const orderRoutes = require("./src/orders/order.route");
+const userRoutes = require("./src/users/user.route");
+const adminRoutes = require("./src/stats/admin.stats");
+const reviewRoutes = require("./src/review/review.route");
+const authRouter = require("./src/auth/auth.route");
 
 const errorHandler = require("./src/middleware/error");
 const fileParser = require("./src/middleware/file");
-app.use(errorHandler)
+app.use(errorHandler);
 
-app.use("/api/books", bookRoutes)
-app.use("/api/orders", orderRoutes)
-app.use("/api/auth", userRoutes)
-app.use("/api/admin", adminRoutes)
-app.use("/api/reviews",reviewRoutes)
-app.use("/auth",authRouter)
+app.use("/api/books", bookRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/auth", userRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/auth", authRouter);
 
-app.use("/test",fileParser,(req,res) => {
-  console.log(req.files)
-  console.log(req.body)
-  
-  res.json({})
-})
+app.use("/test", fileParser, (req, res) => {
+  console.log(req.files);
+  console.log(req.body);
+  res.json({});
+});
 
+// 404 Route (route này sẽ bắt mọi yêu cầu không hợp lệ)
+app.use("*", (req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Giữ route này ở cuối cùng
 app.use("/", (req, res) => {
   res.json({ message: "Book Store Server is running!" });
 });
