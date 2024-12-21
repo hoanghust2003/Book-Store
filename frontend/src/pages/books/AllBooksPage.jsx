@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useFetchAllBooksQuery } from '../../redux/features/books/booksApi';
 import CustomBookCard from './CustomBookCard';
-import { FormControl, FormControlLabel, FormGroup, Checkbox, Slider, Box, Typography } from '@mui/material';
-import Pagination from '@mui/material/Pagination';
-import Stack from '@mui/material/Stack';
+import { FormControl, FormControlLabel, FormGroup, Checkbox, Slider, Box, Typography, Stack, Pagination, Tabs, Tab } from '@mui/material';
 
 const categories = ["Business", "Technology", "Fiction", "Horror", "Adventure"];
 const priceRanges = [
@@ -17,7 +15,8 @@ const AllBooksPage = () => {
   const { data: books = [], isLoading, isError } = useFetchAllBooksQuery();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 8;
   const handleCategoryChange = (event) => {
     const category = event.target.name;
     setSelectedCategories((prev) =>
@@ -49,6 +48,15 @@ const AllBooksPage = () => {
 
     return inCategory && inPriceRange;
   });
+
+  const paginatedBooks = filteredBooks.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error loading books</div>;
@@ -102,12 +110,22 @@ const AllBooksPage = () => {
       <div className="w-3/4">
         <h1 className="text-3xl font-bold mb-6">All Books</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-1">
-          {filteredBooks.map((book) => (
+          {paginatedBooks.map((book) => (
             <CustomBookCard key={book._id} book={book} />
           ))}
         </div>
         <Stack spacing={2} mt={4}>
-          <Pagination count={10} variant="outlined" shape="rounded" />
+        <Tabs
+            value={currentPage}
+            onChange={handlePageChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            aria-label="scrollable auto tabs example"
+          >
+            {Array.from({ length: Math.ceil(filteredBooks.length / itemsPerPage) }, (_, index) => (
+              <Tab key={index + 1} label={`Page ${index + 1}`} />
+            ))}
+          </Tabs>
         </Stack>
       </div>
     </div>

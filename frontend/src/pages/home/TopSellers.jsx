@@ -19,7 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const categories = ["Thể loại", "Business","Fiction","Horror","Adventure"]
+const categories = ["Thể loại","Novel", "Business","Fiction","Horror","Adventure"]
 const TopSellers = () => {
   
   const [selectedCategory,setSelectedCategory] = useState("Chọn thể loại");
@@ -29,6 +29,7 @@ const TopSellers = () => {
   const filteredBooks = selectedCategory === "Chọn thể loại" ? fetchedBooks : fetchedBooks.filter(book =>
     book.category === selectedCategory.toLowerCase()
   )
+  console.log(filteredBooks)
 
   return (
     <div className='py-10 max-w-screen-xl mx-auto' >

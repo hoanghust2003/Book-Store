@@ -17,7 +17,7 @@ app.use(express.json());
 //     credentials: true
 // }))
 const corsOptions = {
-  origin: 'http://localhost:5173', // Update this to match your frontend URL
+  origin: 'http://localhost:5174', // Update this to match your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
