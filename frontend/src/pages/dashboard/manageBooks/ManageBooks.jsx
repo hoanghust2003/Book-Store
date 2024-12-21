@@ -1,30 +1,41 @@
-import React from 'react'
-import { useDeleteBookMutation, useFetchAllBooksQuery } from '../../../redux/features/books/booksApi';
+import React, { useEffect } from 'react'
+import { useDeleteBookMutation, useFetchAllBooksQuery, useFetchBooksByCustomerQuery } from '../../../redux/features/books/booksApi';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../../redux/features/auth/authSlice';
+import { useAuth } from '../../../context/AuthContext';
 const ManageBooks = () => {
     const navigate = useNavigate();
+   const { currentUser } = useAuth();
+    const userId = currentUser?.id;
 
-    const {data: books, refetch} = useFetchAllBooksQuery()
-
-    const [deleteBook] = useDeleteBookMutation()
-
+    // Fetch books
+    const { data: books = [], refetch } = useFetchBooksByCustomerQuery(userId, {
+        skip: !userId, // Skip the query if userId is not available
+    });
+    
+    useEffect(() => {
+        if (userId) {
+            refetch();
+        }
+    }, [userId, refetch]);
+    console.log(currentUser?.id)
+    console.log("Books length",books?.length)
+    const [deleteBook] = useDeleteBookMutation();
     // Handle deleting a book
     const handleDeleteBook = async (id) => {
         try {
             await deleteBook(id).unwrap();
             alert('Book deleted successfully!');
             refetch();
-
         } catch (error) {
             console.error('Failed to delete book:', error.message);
             alert('Failed to delete book. Please try again.');
         }
     };
 
-    // Handle navigating to Edit Book page
     const handleEditClick = (id) => {
-        navigate(`dashboard/edit-book/${id}`);
+        navigate(`/dashboard/edit-book/${id}`);
     };
   return (
     <section className="py-1 bg-blueGray-50">
@@ -78,7 +89,7 @@ const ManageBooks = () => {
                                 </td>
                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
 
-                                    ${book.newPrice}
+                                    {book.newPrice} VNĐ
                                 </td>
                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 space-x-4">
 
@@ -104,5 +115,93 @@ const ManageBooks = () => {
 </section>
   )
 }
+// const ManageBooks = () => {
+//     const navigate = useNavigate();
+//    const { currentUser } = useAuth();
+//     const userId = currentUser?.id;
+
+//     // Fetch books
+//     const { data: books = [], refetch } = useFetchBooksByCustomerQuery(userId, {
+//         skip: !userId, // Skip the query if userId is not available
+//     });
+    
+//     useEffect(() => {
+//         if (userId) {
+//             refetch();
+//         }
+//     }, [userId, refetch]);
+//     console.log(currentUser?.id)
+//     console.log("Books length",books?.length)
+//     const [deleteBook] = useDeleteBookMutation();
+//     // Handle deleting a book
+//     const handleDeleteBook = async (id) => {
+//         try {
+//             await deleteBook(id).unwrap();
+//             alert('Book deleted successfully!');
+//             refetch();
+//         } catch (error) {
+//             console.error('Failed to delete book:', error.message);
+//             alert('Failed to delete book. Please try again.');
+//         }
+//     };
+
+//     const handleEditClick = (id) => {
+//         navigate(`/dashboard/edit-book/${id}`);
+//     };
+
+   
+
+//     return (
+//         <section className="py-1 bg-blueGray-50">
+//             <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4 mx-auto mt-24">
+//                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+//                     <div className="rounded-t mb-0 px-4 py-3 border-0">
+//                         <div className="flex flex-wrap items-center">
+//                             <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+//                                 <h3 className="font-semibold text-base text-blueGray-700">All Books</h3>
+//                             </div>
+//                         </div>
+//                     </div>
+
+//                     <div className="block w-full overflow-x-auto">
+//                         <table className="items-center bg-transparent w-full border-collapse">
+//                             <thead>
+//                                 <tr>
+//                                     <th>#</th>
+//                                     <th>Book Title</th>
+//                                     <th>Category</th>
+//                                     <th>Price</th>
+//                                     <th>Actions</th>
+//                                 </tr>
+//                             </thead>
+//                             <tbody>
+//                                 {books?.length > 0 ? (
+//                                     books.map((book, index) => (
+//                                         <tr key={index}>
+//                                             <td>{index + 1}</td>
+//                                             <td>{book.title}</td>
+//                                             <td>{book.category}</td>
+//                                             <td>{book.newPrice} VNĐ</td>
+//                                             <td>
+//                                                 <Link to={`/dashboard/edit-book/${book._id}`}>Edit</Link>
+//                                                 <button onClick={() => handleDeleteBook(book._id)}>Delete</button>
+//                                             </td>
+//                                         </tr>
+//                                     ))
+//                                 ) : (
+//                                     <tr>
+//                                         <td colSpan="5" className="text-center">
+//                                             No books available.
+//                                         </td>
+//                                     </tr>
+//                                 )}
+//                             </tbody>
+//                         </table>
+//                     </div>
+//                 </div>
+//             </div>
+//         </section>
+//     );
+// };
 
 export default ManageBooks

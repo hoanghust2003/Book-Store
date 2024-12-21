@@ -26,6 +26,14 @@ const booksApi = createApi({
             providesTags: (results, error, id) => [{type: "Books", id}],
 
         }),
+        fetchPendingBooks: builder.query({
+            query: () => "/pending",
+            providesTags:["Books"]
+        }),
+        fetchBooksByCustomer: builder.query({
+            query: (userId) => `/customer-books?userId=${userId}`,
+            providesTags: ["Books"]
+        }),
         addBook: builder.mutation({
             query: (newBook) => ({
                 url: `/create-book`,
@@ -51,12 +59,20 @@ const booksApi = createApi({
                 method: "DELETE"
             }),
             invalidatesTags: ["Books"]
-        })
+        }),
+        approveBook: builder.mutation({
+            query: (id) => ({
+              url: `/approve-book/${id}`,
+              method: 'PUT',
+            }),
+            invalidatesTags: ['Books'],
+          }),
     })
     
 })
 
 export const {useFetchAllBooksQuery, fetchBookById, useAddBookMutation,
-    useUpdateBookMutation,useDeleteBookMutation, useFetchBookByIdQuery
+    useUpdateBookMutation,useDeleteBookMutation, useFetchBookByIdQuery,useApproveBookMutation, useFetchPendingBooksQuery,
+    useFetchBooksByCustomerQuery
 } = booksApi 
 export default booksApi

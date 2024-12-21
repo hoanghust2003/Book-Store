@@ -1,11 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-
+import { useAuth } from "../../context/AuthContext";
 import Loading from '../../components/Loading';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { HiViewGridAdd } from "react-icons/hi";
 import { MdOutlineManageHistory } from "react-icons/md";
-
+import { FaCheckCircle } from "react-icons/fa";
 const DashboardLayout = () => {
   
   const navigate = useNavigate()
@@ -13,7 +13,8 @@ const DashboardLayout = () => {
     localStorage.removeItem('token');
     navigate("/")
   }
-
+  const { currentUser } = useAuth();
+  console.log('Current User:', currentUser);
   return (
     <section className="flex md:bg-gray-100 min-h-screen overflow-hidden">
     <aside className="hidden sm:flex sm:flex-col">
@@ -34,14 +35,37 @@ const DashboardLayout = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
           </Link>
-          <Link to="/dashboard/add-new-book" className="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+          {/* <Link to="/dashboard/add-new-book" className="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
             <span className="sr-only">Add Book</span>
             <HiViewGridAdd className="h-6 w-6"/>
           </Link>
           <Link to="/dashboard/manage-books" className="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
             <span className="sr-only">Documents</span>
             <MdOutlineManageHistory className="h-6 w-6"/>
-          </Link>
+          </Link> */}
+          {/* <Link to="/dashboard/approve-books" className="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+              <FaCheckCircle className="h-6 w-6" />
+            </Link> */}
+            {/* Chỉ hiển thị nếu vai trò không phải admin */}
+            {currentUser?.role === 'customer' && (
+              <>
+                <Link to="/dashboard/add-new-book" className="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                  <span className="sr-only">Add Book</span>
+                  <HiViewGridAdd className="h-6 w-6" />
+                </Link>
+                <Link to="/dashboard/manage-books" className="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                  <span className="sr-only">Manage Books</span>
+                  <MdOutlineManageHistory className="h-6 w-6" />
+                </Link>
+              </>
+            )}
+
+            {/* Chỉ hiển thị nếu vai trò là admin */}
+            {currentUser?.role === 'admin' && (
+              <Link to="/dashboard/approve-books" className="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                <FaCheckCircle className="h-6 w-6" />
+              </Link>
+            )}
         </nav>
         <div className="inline-flex items-center justify-center h-20 w-20 border-t border-gray-700">
           <button className="p-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
@@ -71,13 +95,13 @@ const DashboardLayout = () => {
         <div className="flex flex-shrink-0 items-center ml-auto">
           <button className="inline-flex items-center p-2 hover:bg-gray-100 focus:bg-gray-100 rounded-lg">
             <span className="sr-only">User Menu</span>
-            <div className="hidden md:flex md:flex-col md:items-end md:leading-tight">
+            {/* <div className="hidden md:flex md:flex-col md:items-end md:leading-tight">
               <span className="font-semibold">Grace Simmons</span>
               <span className="text-sm text-gray-600">Lecturer</span>
             </div>
             <span className="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100 rounded-full overflow-hidden">
               <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="user profile photo" className="h-full w-full object-cover"/>
-            </span>
+            </span> */}
             <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" className="hidden sm:block h-6 w-6 text-gray-300">
               <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
             </svg> 

@@ -15,7 +15,7 @@ const RecommendSection = ({ category }) => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching books</div>;
 
-  const filteredBooks = books.filter(book => book.category === category);
+  const filteredBooks = books.filter(book => book.category === category && book.trending)
 
   return (
     <div>

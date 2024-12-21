@@ -13,6 +13,8 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { getImgUrl } from "../../utils/getImgUrl";
 import { removeFromCart, clearCart } from "../../redux/features/cart/cartSlice";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -56,19 +58,19 @@ const CheckoutPage = () => {
         navigate("/orders");
       } catch (error) {
         console.error("Error placing order", error);
-        alert("Failed to place order");
+         toast.error("Failed to place order");
       }
     } else if (paymentMethod === "VNPAY") {
       try {
         console.log("Order ID:", newOrder._id);
         const { data } = await axios.post(
-          "http://localhost:5000/api/orders/payment/create-url",
-          { orderId: newOrder._id }
+          "http://localhost:5000/api/orders/create_payment_url",
+          { orderId: newOrder._id, bankCode: "NCB", language: "vn" }
         );
-        window.location.href = data.paymentUrl; // Redirect to VNPay payment page
+        window.location.href = data.url; // Redirect to VNPay payment page
       } catch (error) {
         console.error("Error creating VNPay payment URL", error);
-        alert("Failed to initiate VNPay payment");
+        toast.success("Failed to initiate VNPay payment");
       }
     }
   };

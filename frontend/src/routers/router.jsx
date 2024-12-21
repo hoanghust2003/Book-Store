@@ -18,7 +18,7 @@ import SingleBook from "../pages/books/SingleBook";
 import PrivateRoute from "./PrivateRoute";
 import OrderPage from "../pages/books/OrderPage";
 import AllBooksPage from "../pages/books/AllBooksPage";
-
+import ApproveBooks from '../pages/dashboard/ApproveBooks';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -99,6 +99,12 @@ const router = createBrowserRouter([
             element: <AdminRoute>
               <ManageBooks/>
               </AdminRoute>,
+          },
+          {
+            path: "approve-books",
+            element: <AdminRoute>
+              <ApproveBooks/>
+            </AdminRoute>,
           },
         ]
       }

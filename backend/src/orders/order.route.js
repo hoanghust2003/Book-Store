@@ -66,10 +66,11 @@ router.post('/create_payment_url', async function (req, res, next) {
   vnp_Params['vnp_SecureHash'] = signed;
   vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 
-  res.redirect(vnpUrl)
+  //res.redirect(vnpUrl)
+  res.status(200).json({ url: vnpUrl });
 });
 
-router.get('/vnpay_return', function (req, res, next) {
+router.get('/payment/vnpay_return', function (req, res, next) {
   let vnp_Params = req.query;
 
   let secureHash = vnp_Params['vnp_SecureHash'];
@@ -91,9 +92,11 @@ router.get('/vnpay_return', function (req, res, next) {
   if(secureHash === signed){
       //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
 
-      res.render('success', {code: vnp_Params['vnp_ResponseCode']})
-  } else{
-      res.render('success', {code: '97'})
+      //res.render('success', {code: vnp_Params['vnp_ResponseCode']})
+      res.redirect('http://localhost:5173/orders');
+    } else{
+      //res.render('success', {code: '97'})
+      res.redirect('http://localhost:5173/orders?status=failed');
   }
 });
 function sortObject(obj) {

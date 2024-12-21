@@ -48,6 +48,9 @@ const bookSchema = new mongoose.Schema({
     publisher : {
         type : String
     },
+    ownerId: {
+        type: String,
+    },
     size : {
         type : String
     },
@@ -59,6 +62,10 @@ const bookSchema = new mongoose.Schema({
     },
     format : {
         type : String
+    },
+    approved : {
+        type: Number,
+        default: 0
     }
   }, {
     timestamps: true,

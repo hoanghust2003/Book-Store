@@ -10,12 +10,23 @@ require('dotenv').config()
 
 // middleware
 app.use(express.json());
-app.use(cors({
-    origin: ['http://localhost:5173', 'https://book-app-frontend-tau.vercel.app','http://localhost:5174'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}))
+// app.use(cors({
+//     origin: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     credentials: true
+// }))
+const corsOptions = {
+  origin: 'http://localhost:5173', // Update this to match your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
+
+app.options('*', cors(corsOptions));
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
 // Use helmet for security headers

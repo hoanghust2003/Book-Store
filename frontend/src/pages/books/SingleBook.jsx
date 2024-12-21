@@ -19,6 +19,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../redux/features/auth/authSlice';
+import ReactHtmlParser from 'react-html-parser';
 
 function handleClick(event) {
   event.preventDefault();
@@ -188,9 +189,10 @@ const SingleBook = () => {
           {value === 'details' && (
             <div className="mt-10">
               <h2 className="text-2xl font-bold mb-6"></h2>
-              {book.longDescription.split('\n\n').map((paragraph, index) => (
+              {/* {book.longDescription.split('\n\n').map((paragraph, index) => (
                 <p key={index} className="text-gray-700 dark:text-gray-300 mb-4">{paragraph}</p>
-              ))}
+              ))} */}
+              {ReactHtmlParser(book.longDescription)}
             </div>
           )}
 

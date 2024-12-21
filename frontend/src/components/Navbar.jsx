@@ -1,16 +1,22 @@
-import axios from 'axios';
+import axios from "axios";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
-import { HiOutlineUser, HiOutlineHeart, HiOutlineShoppingCart } from "react-icons/hi";
+import {
+  HiOutlineUser,
+  HiOutlineHeart,
+  HiOutlineShoppingCart,
+} from "react-icons/hi";
 import DarkModeSwitch from "./DarkModeSwitch";
-import { Menu, MenuItem, Button, Box } from "@mui/material"
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { Menu, MenuItem, Button, Box } from "@mui/material";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import logo from "../assets/footer-logo.png";
 import avatarImg from "../assets/avatar.png";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
-import getBaseUrl from '../utils/baseURL';
+import getBaseUrl from "../utils/baseURL";
+import Avatar from "@mui/material/Avatar";
+import { deepOrange, deepPurple } from "@mui/material/colors";
 
 const DropdownMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -27,9 +33,8 @@ const DropdownMenu = () => {
   const categories = [
     {
       title: "Sách",
-      items: ["All Books","Business", "Fiction", "Horror", "Adventure"],
-    }
-    
+      items: ["All Books", "Business", "Fiction", "Horror", "Adventure"],
+    },
   ];
 
   return (
@@ -56,14 +61,22 @@ const DropdownMenu = () => {
         }}
       >
         {categories.map((category) => (
-    <div key={category.title}>
-      <h3 style={{ padding: "8px 16px", fontWeight: "bold" }}>{category.title}</h3>
-      {category.items.map((item) => (
-        <MenuItem key={item} onClick={handleClose}>
-          <Link to={`/${item === "All Books" ? "books" : item.toLowerCase().replace(/\s+/g, "-")}`}>
-            {item}
-          </Link>
-        </MenuItem>
+          <div key={category.title}>
+            <h3 style={{ padding: "8px 16px", fontWeight: "bold" }}>
+              {category.title}
+            </h3>
+            {category.items.map((item) => (
+              <MenuItem key={item} onClick={handleClose}>
+                <Link
+                  to={`/${
+                    item === "All Books"
+                      ? "books"
+                      : item.toLowerCase().replace(/\s+/g, "-")
+                  }`}
+                >
+                  {item}
+                </Link>
+              </MenuItem>
             ))}
           </div>
         ))}
@@ -78,27 +91,46 @@ const Navbar = () => {
   const { currentUser, logout } = useAuth();
 
   const navigation = [
-    { name: "Orders", href: "/orders" },
-    { name: "Cart Page", href: "/cart" },
-    { name: "Check Out", href: "/checkout" },
+    { name: "Đơn Hàng", href: "/orders" },
+    { name: "Giỏ Hàng", href: "/cart" },
+    { name: "Thanh Toán", href: "/checkout" },
   ];
 
-  if (currentUser?.role === 'admin') {
+  // if (currentUser?.role === 'admin') {
+  //   navigation.unshift({ name: "Dashboard", href: "/dashboard" });
+  // }
+  if (currentUser?.role === "admin") {
+    navigation.unshift({
+      name: "Approve Books",
+      href: "/dashboard/approve-books",
+    });
     navigation.unshift({ name: "Dashboard", href: "/dashboard" });
+  }
+
+  if (currentUser?.role === "customer") {
+    navigation.unshift({
+      name: "Manage Books",
+      href: "/dashboard/manage-books",
+    });
+    navigation.unshift({ name: "Add Book", href: "/dashboard/add-new-book" });
   }
 
   const handleLogOut = async () => {
     try {
-      await axios.post(`${getBaseUrl()}/auth/logout`, {}, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
-      localStorage.removeItem('token');
-      localStorage.removeItem('tokenType');
-      window.location.href = '/login';
+      await axios.post(
+        `${getBaseUrl()}/auth/logout`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      localStorage.removeItem("token");
+      localStorage.removeItem("tokenType");
+      window.location.href = "/login";
     } catch (error) {
-      console.error('Failed to log out:', error);
+      console.error("Failed to log out:", error);
     }
   };
 
@@ -146,25 +178,45 @@ const Navbar = () => {
           {currentUser ? (
             <div className="relative">
               <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                <img
+                {/* <img
                   src={currentUser?.avatar || avatarImg}
                   alt="Avatar"
                   className="w-8 h-8 rounded-full ring-2 ring-blue-300"
-                />
+                /> */}
+                {currentUser?.avatar ? (
+                  <img
+                    src={currentUser.avatar}
+                    alt="Avatar"
+                    className="w-8 h-8 rounded-full ring-2 ring-blue-300"
+                  />
+                ) : (
+                  <Avatar sx={{ bgcolor: deepOrange[500] }}>
+                    {currentUser.name.charAt(0)}
+                  </Avatar>
+                )}
               </button>
               {isDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white text-black shadow-lg rounded-md z-40">
                   <ul className="py-2">
                     {navigation.map((item) => (
-                      <li key={item.name} onClick={() => setIsDropdownOpen(false)}>
-                        <Link to={item.href} className="block px-4 py-2 text-sm hover:bg-gray-100">
+                      <li
+                        key={item.name}
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        <Link
+                          to={item.href}
+                          className="block px-4 py-2 text-sm hover:bg-gray-100"
+                        >
                           {item.name}
                         </Link>
                       </li>
                     ))}
                     <li>
-                      <Link to="/profile" className="block px-4 py-2 text-sm hover:bg-gray-100">
-                        Profile
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-sm hover:bg-gray-100"
+                      >
+                        Tài Khoản
                       </Link>
                     </li>
                     <li>
@@ -184,11 +236,6 @@ const Navbar = () => {
               <HiOutlineUser className="text-white w-6 h-6" />
             </Link>
           )}
-
-          {/* Wishlist */}
-          <Link to="/wishlist">
-            <HiOutlineHeart className="text-white w-6 h-6" />
-          </Link>
 
           {/* Cart */}
           <Link
