@@ -13,5 +13,4 @@ reviewRouter.post(
 );
 reviewRouter.get('/:bookId', isAuth, getReview);
 reviewRouter.get('/list/:bookId', getPublicReviews);
-
 module.exports = reviewRouter;

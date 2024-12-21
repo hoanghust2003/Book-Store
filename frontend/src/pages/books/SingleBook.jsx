@@ -17,6 +17,8 @@ import ReviewForm from "./ReviewForm";
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../redux/features/auth/authSlice';
 
 function handleClick(event) {
   event.preventDefault();
@@ -35,29 +37,6 @@ const SingleBook = () => {
     setValue(newValue);
   };
 
-  // useEffect(() => {
-  //   const fetchReviews = async () => {
-  //     try {
-  //       const response = await fetch(`/api/reviews/list/${id}`);
-
-  //       // Kiểm tra nếu response không hợp lệ
-  //       if (!response.ok) {
-  //         console.error(`Failed to fetch reviews: ${response.status}`);
-  //         const text = await response.text(); // Log response text để kiểm tra lỗi
-  //         console.error("Response:", text);
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
-
-  //       const data = await response.json();
-  //       setReviews(data.reviews || []); // Đảm bảo `data.reviews` tồn tại
-  //     } catch (error) {
-  //       console.error("Error fetching reviews:", error);
-  //     }
-  //   };
-
-  //   fetchReviews();
-  // }, [id]);
-
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };
@@ -69,6 +48,19 @@ const SingleBook = () => {
   const formatPrice = (price) => {
     return price.toLocaleString('vi-VN'); // Định dạng giá theo kiểu Việt Nam
   };
+
+  const currentUser = useSelector(selectCurrentUser);
+  const [isOwner, setIsOwner] = useState(false);
+
+  useEffect(() => {
+    // Ensure current user is updated correctly
+    console.log("Current User:", currentUser);
+    if (currentUser && currentUser.id === book.ownerId) {
+      setIsOwner(true);
+    } else {
+      setIsOwner(false);
+    }
+  }, [currentUser]);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !book)

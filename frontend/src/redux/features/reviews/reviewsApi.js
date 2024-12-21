@@ -31,7 +31,7 @@ const reviewsApi = createApi({
       providesTags: (result, error, bookId) => [{ type: 'Reviews', id: bookId }],
     }),
     getPublicReviews: builder.query({
-      query: (bookId) => `/list/${bookId}`,
+      query: (bookId) => `/${bookId}`,
       // providesTags: ['Reviews'],
     }),
   }),

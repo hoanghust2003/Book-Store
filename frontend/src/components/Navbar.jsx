@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
@@ -9,6 +10,7 @@ import logo from "../assets/footer-logo.png";
 import avatarImg from "../assets/avatar.png";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
+import getBaseUrl from '../utils/baseURL';
 
 const DropdownMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,15 +78,28 @@ const Navbar = () => {
   const { currentUser, logout } = useAuth();
 
   const navigation = [
-    { name: "Dashboard", href: "/dashboard" },
     { name: "Orders", href: "/orders" },
     { name: "Cart Page", href: "/cart" },
     { name: "Check Out", href: "/checkout" },
-    { name: "All Books", href: "/books" }
   ];
 
-  const handleLogOut = () => {
-    logout();
+  if (currentUser?.role === 'admin') {
+    navigation.unshift({ name: "Dashboard", href: "/dashboard" });
+  }
+
+  const handleLogOut = async () => {
+    try {
+      await axios.post(`${getBaseUrl()}/auth/logout`, {}, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      localStorage.removeItem('token');
+      localStorage.removeItem('tokenType');
+      window.location.href = '/login';
+    } catch (error) {
+      console.error('Failed to log out:', error);
+    }
   };
 
   return (

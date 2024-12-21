@@ -18,6 +18,8 @@ const orderSchema = new mongoose.Schema(
       country: String,
       state: String,
       zipcode: String,
+      district: String,
+      ward: String,
     },
     phone: {
       type: Number,

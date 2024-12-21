@@ -12,11 +12,23 @@ require('dotenv').config()
 app.use(express.json());
 app.use(cors({
     origin: ['http://localhost:5173', 'https://book-app-frontend-tau.vercel.app','http://localhost:5174'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }))
 app.use(express.urlencoded({extended: false}))
 app.use(cookieParser())
-app.use(helmet()); // Use helmet for security headers
+// Use helmet for security headers
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrc: ["'self'"],
+      imgSrc: ["'self'", "data:"],
+    },
+  })
+);
 
 // Set COOP and COEP headers
 app.use((req, res, next) => {

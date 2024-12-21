@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../users/user.model');
 const { sendErrorResponse, formatUserProfile } = require('../utils/helper');
 const admin = require('firebase-admin');
-
+const BlacklistedToken = require('../auth/blacklistedToken.model');
 const serviceAccount = {
   type: "service_account",
   project_id: process.env.GOOGLE_PROJECT_ID,
@@ -34,38 +34,15 @@ const isAuth = async (req, res, next) => {
     });
   }
 
-  /*
-   try {
-    // if the token is valid
-    const payload = jwt.verify(authToken, process.env.JWT_SECRET);
-
-    // if the token is valid find user from the payload
-    // if the token is invalid it will throw error which we can handle
-    // from inside the error middleware
-    const user = await UserModel.findById(payload.userId);
-    if (!user) {
+  try {
+    const blacklistedToken = await BlacklistedToken.findOne({ token: authToken });
+    if (blacklistedToken) {
       return sendErrorResponse({
-        message: "Unauthorized request user not found!",
+        message: "Unauthorized request, token is blacklisted",
         status: 401,
         res,
       });
     }
-
-    req.user = formatUserProfile(user)
-
-    next();
-  } catch (error) {
-    return sendErrorResponse({
-      message: "Unauthorized request",
-      status: 401,
-      res,
-    });
-  }
-};
-  
-  */
-
-  try {
     // if the token is valid
     let payload;
     if (authToken.length > 500) {
@@ -107,10 +84,9 @@ const isAuth = async (req, res, next) => {
             res,
           });
         }
-
         req.user = formatUserProfile(user);
     }
-
+    console.log("Authenticated User:", req.user);
     next();
   } catch (error) {
     console.error("Error in isAuth middleware:", error);
