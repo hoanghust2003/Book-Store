@@ -3,6 +3,7 @@ import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import defaultAvatar from "../../assets/avatar.png"
+import getBaseUrl from "../../utils/baseURL";
 const ReviewSection = ({ id, title }) => {
   const [reviews, setReviews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -12,7 +13,7 @@ const ReviewSection = ({ id, title }) => {
     const fetchReviews = async () => {
       try {
         const token = localStorage.getItem('token'); // Lấy token từ localStorage
-        const response = await axios.get(`http://localhost:5000/api/reviews/list/${id}`, {
+        const response = await axios.get(`${getBaseUrl()}/api/reviews/list/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`, // Gửi token trong header
           },

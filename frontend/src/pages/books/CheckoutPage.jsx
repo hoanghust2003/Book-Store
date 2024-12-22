@@ -15,6 +15,7 @@ import { getImgUrl } from "../../utils/getImgUrl";
 import { removeFromCart, clearCart } from "../../redux/features/cart/cartSlice";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import getBaseUrl from "../../utils/baseURL";
 
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
@@ -64,7 +65,7 @@ const CheckoutPage = () => {
       try {
         console.log("Order ID:", newOrder._id);
         const { data } = await axios.post(
-          "http://localhost:5000/api/orders/create_payment_url",
+          `${getBaseUrl}/api/orders/create_payment_url`,
           { orderId: newOrder._id, bankCode: "NCB", language: "vn" }
         );
         window.location.href = data.url; // Redirect to VNPay payment page

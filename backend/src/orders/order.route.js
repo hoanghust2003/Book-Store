@@ -88,15 +88,15 @@ router.get('/payment/vnpay_return', function (req, res, next) {
   let crypto = require("crypto");     
   let hmac = crypto.createHmac("sha512", secretKey);
   let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
-
+  let fe_url=process.env.FE_URL;
   if(secureHash === signed){
       //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
 
       //res.render('success', {code: vnp_Params['vnp_ResponseCode']})
-      res.redirect('http://localhost:5173/orders');
+      res.redirect(`${fe_url}/orders`);
     } else{
       //res.render('success', {code: '97'})
-      res.redirect('http://localhost:5173/orders?status=failed');
+      res.redirect(`${fe_url}/orders?status=failed`);
   }
 });
 function sortObject(obj) {
