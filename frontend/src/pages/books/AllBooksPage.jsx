@@ -18,7 +18,7 @@ const AllBooksPage = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 8;
   const handleCategoryChange = (event) => {
-    const category = event.target.name;
+    const category = event.target.name.toLowerCase();
     setSelectedCategories((prev) =>
       prev.includes(category) ? prev.filter((c) => c !== category) : [...prev, category]
     );
@@ -35,7 +35,7 @@ const AllBooksPage = () => {
 
   const filteredBooks = books.filter((book) => {
     const inCategory =
-      selectedCategories.length === 0 || selectedCategories.includes(book.category);
+      selectedCategories.length === 0 || selectedCategories.includes(book.category.toLowerCase());
 
     const inPriceRange =
       selectedPriceRanges.length === 0 ||
@@ -74,9 +74,9 @@ const AllBooksPage = () => {
                 key={category}
                 control={
                   <Checkbox
-                    checked={selectedCategories.includes(category)}
+                    checked={selectedCategories.includes(category.toLowerCase())}
                     onChange={handleCategoryChange}
-                    name={category}
+                    name={category.toLowerCase()}
                   />
                 }
                 label={category}
