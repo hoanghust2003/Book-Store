@@ -5,3 +5,5 @@ backend/node_modules/
 backend/.env
 frontend/.env.local
 backend/book-store-7195c-firebase-adminsdk-jsi25-e5e576faf6.json
+frontend/package-lock.json
+frontend/node_modules/
