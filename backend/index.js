@@ -17,7 +17,7 @@ app.use(express.json());
 //     credentials: true
 // }))
 const corsOptions = {
-  origin: 'http://localhost:5174', // Update this to match your frontend URL
+  origin: 'http://localhost:5173', // Update this to match your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -34,7 +34,8 @@ app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
       scriptSrc: ["'self'"],
       imgSrc: ["'self'", "data:"],
     },
