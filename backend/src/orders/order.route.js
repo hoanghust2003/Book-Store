@@ -94,11 +94,11 @@ router.get('/payment/vnpay_return', async function (req, res, next) {
   let fe_url=process.env.FE_URL;
   if(vnp_Params['vnp_ResponseCode'] === '00'){
     //đổi trạng thái đơn hàng
-    order.paymentStatus = 'paid';
+    order.paymentStatus = 'Paid';
     await order.save();
   }
   else{
-    order.paymentStatus = 'failed';
+    order.paymentStatus = 'Failed';
     await order.save();
   }
   if(secureHash === signed){
