@@ -15,6 +15,51 @@ router.get("/pending", getPendingBooks);
 
 router.get("/customer-books", getBooksByCustomer);
 
+router.get('/search', async (req, res) => {
+    try {
+      const { title, category, trending, minPrice, maxPrice } = req.query;
+  
+      let searchConditions = {};
+  
+      // Title search with multiple word support and diacritic handling
+      if (title) {
+        searchConditions.$or = [
+          { title: { $regex: title.replace(/\s+/g, '.*'), $options: 'i' }},
+          { description: { $regex: title.replace(/\s+/g, '.*'), $options: 'i' }}
+        ];
+      }
+  
+      if (category) {
+        searchConditions.category = { $regex: category, $options: 'i' };
+      }
+  
+      if (trending !== undefined) {
+        searchConditions.trending = trending === 'true';
+      }
+  
+      // Price range search using newPrice instead of oldPrice
+      if (minPrice || maxPrice) {
+        searchConditions.newPrice = {};
+        if (minPrice) searchConditions.newPrice.$gte = parseFloat(minPrice);
+        if (maxPrice) searchConditions.newPrice.$lte = parseFloat(maxPrice);
+      }
+  
+      // Add approved condition
+      searchConditions.approved = 1;
+  
+      const books = await Book.find(searchConditions);
+      
+      if (books.length === 0) {
+        return res.status(200).json([]);
+      }
+  
+      res.status(200).json(books);
+    } catch (err) {
+      console.error('Search error:', err);
+      res.status(500).json({ message: 'Error searching books' });
+    }
+  });
+
 // single book endpoint
 router.get("/:id", getSingleBook);
 
@@ -27,39 +72,6 @@ router.delete("/:id", deleteABook)
 // approve a book (admin)
 router.put("/approve-book/:id", approveBook);
 
-// Tìm kiếm sách API
-router.get('/search', async (req, res) => {
-  try {
-      const { title, category, trending, minPrice, maxPrice } = req.query;
 
-      // Tạo điều kiện tìm kiếm động
-      let searchConditions = {};
-
-      if (title) {
-          searchConditions.title = { $regex: title, $options: 'i' };  // Tìm kiếm không phân biệt hoa thường
-      }
-
-      if (category) {
-          searchConditions.category = category;
-      }
-
-      if (trending !== undefined) {
-          searchConditions.trending = trending === 'true';
-      }
-
-      if (minPrice || maxPrice) {
-          searchConditions.oldPrice = {};
-          if (minPrice) searchConditions.oldPrice.$gte = parseFloat(minPrice);
-          if (maxPrice) searchConditions.oldPrice.$lte = parseFloat(maxPrice);
-      }
-
-      // Tìm sách theo các điều kiện
-      const books = await Book.find(searchConditions);
-      res.status(200).json(books);
-  } catch (err) {
-      console.error(err);
-      res.status(500).json({ message: 'Error retrieving books' });
-  }
-});
 
 module.exports = router;
