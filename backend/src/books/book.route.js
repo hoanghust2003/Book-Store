@@ -28,7 +28,7 @@ router.delete("/:id", deleteABook)
 router.put("/approve-book/:id", approveBook);
 
 // Tìm kiếm sách API
-app.get('/search', async (req, res) => {
+router.get('/search', async (req, res) => {
   try {
       const { title, category, trending, minPrice, maxPrice } = req.query;
 
