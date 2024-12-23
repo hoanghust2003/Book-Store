@@ -27,6 +27,39 @@ router.delete("/:id", deleteABook)
 // approve a book (admin)
 router.put("/approve-book/:id", approveBook);
 
+// Tìm kiếm sách API
+app.get('/api/books/search', async (req, res) => {
+  try {
+      const { title, category, trending, minPrice, maxPrice } = req.query;
 
+      // Tạo điều kiện tìm kiếm động
+      let searchConditions = {};
+
+      if (title) {
+          searchConditions.title = { $regex: title, $options: 'i' };  // Tìm kiếm không phân biệt hoa thường
+      }
+
+      if (category) {
+          searchConditions.category = category;
+      }
+
+      if (trending !== undefined) {
+          searchConditions.trending = trending === 'true';
+      }
+
+      if (minPrice || maxPrice) {
+          searchConditions.oldPrice = {};
+          if (minPrice) searchConditions.oldPrice.$gte = parseFloat(minPrice);
+          if (maxPrice) searchConditions.oldPrice.$lte = parseFloat(maxPrice);
+      }
+
+      // Tìm sách theo các điều kiện
+      const books = await Book.find(searchConditions);
+      res.status(200).json(books);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error retrieving books' });
+  }
+});
 
 module.exports = router;
