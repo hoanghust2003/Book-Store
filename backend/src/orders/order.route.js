@@ -46,7 +46,7 @@ router.post('/create_payment_url', async function (req, res, next) {
   vnp_Params['vnp_Locale'] = locale;
   vnp_Params['vnp_CurrCode'] = currCode;
   vnp_Params['vnp_TxnRef'] = orderId;
-  vnp_Params['vnp_OrderInfo'] = 'Thanh toan cho ma GD:' + orderId;
+  vnp_Params['vnp_OrderInfo'] = 'Thanh toan cho ma GD:' + order_Id;
   vnp_Params['vnp_OrderType'] = 'other';
   vnp_Params['vnp_Amount'] = amount * 100;
   vnp_Params['vnp_ReturnUrl'] = returnUrl;
@@ -66,17 +66,20 @@ router.post('/create_payment_url', async function (req, res, next) {
   vnp_Params['vnp_SecureHash'] = signed;
   vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 
-  //res.redirect(vnpUrl)
+  // res.redirect(vnpUrl)
   res.status(200).json({ url: vnpUrl });
 });
 
-router.get('/payment/vnpay_return', function (req, res, next) {
+router.get('/payment/vnpay_return', async function (req, res, next) {
   let vnp_Params = req.query;
 
   let secureHash = vnp_Params['vnp_SecureHash'];
 
   delete vnp_Params['vnp_SecureHash'];
   delete vnp_Params['vnp_SecureHashType'];
+  const orderInfo = vnp_Params['vnp_OrderInfo'];
+  const orderId = orderInfo.split(':')[1].trim();
+  let order = await Order.findById(orderId);
 
   vnp_Params = sortObject(vnp_Params);
 
@@ -89,6 +92,15 @@ router.get('/payment/vnpay_return', function (req, res, next) {
   let hmac = crypto.createHmac("sha512", secretKey);
   let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
   let fe_url=process.env.FE_URL;
+  if(vnp_Params['vnp_ResponseCode'] === '00'){
+    //đổi trạng thái đơn hàng
+    order.paymentStatus = 'paid';
+    await order.save();
+  }
+  else{
+    order.paymentStatus = 'failed';
+    await order.save();
+  }
   if(secureHash === signed){
       //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
 

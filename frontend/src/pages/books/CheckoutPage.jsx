@@ -65,7 +65,7 @@ const CheckoutPage = () => {
       try {
         console.log("Order ID:", newOrder._id);
         const { data } = await axios.post(
-          `${getBaseUrl}/api/orders/create_payment_url`,
+          `${getBaseUrl()}/api/orders/create_payment_url`,
           { orderId: newOrder._id, bankCode: "NCB", language: "vn" }
         );
         window.location.href = data.url; // Redirect to VNPay payment page
