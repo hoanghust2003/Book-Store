@@ -1,31 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { useFetchAllBooksQuery } from "../../redux/features/books/booksApi";
-import CustomBookCard from "./CustomBookCard";
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useSearchBooksQuery } from '../redux/features/books/booksApi';
+import BookCard from './books/BookCard';
+import CustomBookCard from './books/CustomBookCard';
 import {
   FormControl,
   FormControlLabel,
   FormGroup,
   Checkbox,
-  Slider,
   Box,
   Typography,
   Stack,
-  Pagination,
   Tabs,
   Tab,
-} from "@mui/material";
+} from '@mui/material';
+import getBaseUrl from "../utils/baseURL";
 import axios from "axios";
-import getBaseUrl from "../../utils/baseURL";
-const categories = ["Novel","Business", "Technology", "Fiction", "Horror", "Adventure"];
-const priceRanges = [
-  { label: "0đ - 150.000đ", min: 0, max: 150000 },
-  { label: "150.000đ - 300.000đ", min: 150000, max: 300000 },
-  { label: "300.000đ - 500.000đ", min: 300000, max: 500000 },
-  { label: "500.000đ - 700.000đ", min: 500000, max: 700000 },
-  { label: "700.000đ - Trở Lên", min: 700000, max: Infinity },
-];
-const AllBooksPage = () => {
-  const { data: books = [], isLoading, isError } = useFetchAllBooksQuery();
+
+const SearchResults = () => {
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const title = query.get('title');
+  const category = query.get('category');
+  const minPrice = query.get('minPrice');
+  const maxPrice = query.get('maxPrice');
+  const { data: books = [], isLoading, isError } = useSearchBooksQuery({ title, category, minPrice, maxPrice });
+  const categories = ["Novel","Business", "Technology", "Fiction", "Horror", "Adventure"];
+  const priceRanges = [
+    { label: "0đ - 150.000đ", min: 0, max: 150000 },
+    { label: "150.000đ - 300.000đ", min: 150000, max: 300000 },
+    { label: "300.000đ - 500.000đ", min: 300000, max: 500000 },
+    { label: "500.000đ - 700.000đ", min: 500000, max: 700000 },
+    { label: "700.000đ - Trở Lên", min: 700000, max: Infinity },
+  ];
+
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPriceRanges, setSelectedPriceRanges] = useState([]);
   const [selectedOwners, setSelectedOwners] = useState([]);
@@ -94,8 +102,8 @@ const AllBooksPage = () => {
           book.newPrice < range.max
       );
 
-    const inOwner =
-      selectedOwners.length === 0 || selectedOwners.includes(book.ownerId);
+      const inOwner =
+      selectedOwners.length === 0 || selectedOwners.includes(book.ownerId);  
 
     return inCategory && inPriceRange && inOwner;
   });
@@ -109,8 +117,9 @@ const AllBooksPage = () => {
     setCurrentPage(value);
   };
 
+
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error loading books</div>;
+  if (isError) return <div>Error fetching books</div>;
 
   return (
     <div className="py-10 max-w-screen-xl mx-auto flex">
@@ -187,7 +196,7 @@ const AllBooksPage = () => {
         </Box>
       </div>
       <div className="w-3/4">
-        <h1 className="text-3xl font-bold mb-6">All Books</h1>
+        <h1 className="text-3xl font-bold mb-6">Kết quả tìm kiếm cho "{title}"</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-1">
           {paginatedBooks.map((book) => (
             <CustomBookCard key={book._id} book={book} />
@@ -214,4 +223,4 @@ const AllBooksPage = () => {
   );
 };
 
-export default AllBooksPage;
+export default SearchResults;

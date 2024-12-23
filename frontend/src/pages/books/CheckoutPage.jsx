@@ -91,6 +91,7 @@ const CheckoutPage = () => {
       phone: data.phone,
       productIds: cartItems.map((item) => item?._id),
       totalPrice: totalPrice,
+      detailAddr: data.detailAddr,
     };
 
     try {
@@ -313,15 +314,15 @@ const CheckoutPage = () => {
                 {/* Địa chỉ nhận hàng */}
                 <div className="lg:col-span-2 flex items-center">
                   <label
-                    htmlFor="address"
+                    htmlFor="detailAddr"
                     className="w-1/3 font-medium text-gray-600 dark:text-gray-300"
                   >
                     Địa chỉ nhận hàng
                   </label>
                   <input
-                    {...register("address", { required: true })}
+                    {...register("detailAddr", { required: true })}
                     type="text"
-                    id="address"
+                    id="detailAddr"
                     placeholder="Nhập địa chỉ nhận hàng"
                     className="flex-1 h-10 border rounded px-4 bg-gray-50 dark:bg-gray-700 dark:text-gray-300"
                   />

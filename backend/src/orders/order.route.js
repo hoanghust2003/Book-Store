@@ -92,9 +92,11 @@ router.get('/payment/vnpay_return', async function (req, res, next) {
   let hmac = crypto.createHmac("sha512", secretKey);
   let signed = hmac.update(new Buffer(signData, 'utf-8')).digest("hex");     
   let fe_url=process.env.FE_URL;
+  let status = 'failed';
   if(vnp_Params['vnp_ResponseCode'] === '00'){
     //đổi trạng thái đơn hàng
     order.paymentStatus = 'Paid';
+    status = 'success';
     await order.save();
   }
   else{
@@ -105,7 +107,7 @@ router.get('/payment/vnpay_return', async function (req, res, next) {
       //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
 
       //res.render('success', {code: vnp_Params['vnp_ResponseCode']})
-      res.redirect(`${fe_url}/orders`);
+      res.redirect(`${fe_url}/orders?status=${status}&orderId=${orderId}`);
     } else{
       //res.render('success', {code: '97'})
       res.redirect(`${fe_url}/orders?status=failed`);

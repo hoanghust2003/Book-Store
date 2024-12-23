@@ -43,7 +43,7 @@ const BookCard = ({book}) => {
           </Link>
           <p className="text-gray-600 dark:text-gray-300 mb-5 line-clamp-3"
           dangerouslySetInnerHTML={{
-            __html: truncateDescription(book?.longDescription, 165),
+            __html: truncateDescription(book?.longDescription, 150),
           }}
           >
             {/* {book?.longDescription.length > 80 ? `${book?.longDescription

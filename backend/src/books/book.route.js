@@ -25,7 +25,7 @@ router.get('/search', async (req, res) => {
       if (title) {
         searchConditions.$or = [
           { title: { $regex: title.replace(/\s+/g, '.*'), $options: 'i' }},
-          { description: { $regex: title.replace(/\s+/g, '.*'), $options: 'i' }}
+        //   { description: { $regex: title.replace(/\s+/g, '.*'), $options: 'i' }}
         ];
       }
   

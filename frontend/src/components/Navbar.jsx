@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { IoSearchOutline } from "react-icons/io5";
 import {
   HiOutlineUser,
@@ -15,8 +15,10 @@ import avatarImg from "../assets/avatar.png";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
 import getBaseUrl from "../utils/baseURL";
+import { useSearchBooksQuery } from "../redux/features/books/booksApi";
 import Avatar from "@mui/material/Avatar";
 import { deepOrange, deepPurple } from "@mui/material/colors";
+import BookCard from "../pages/books/BookCard";
 
 const DropdownMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -33,7 +35,7 @@ const DropdownMenu = () => {
   const categories = [
     {
       title: "Sách",
-      items: ["All Books", "Business", "Fiction", "Horror", "Adventure"],
+      items: ["Khám Phá"],
     },
   ];
 
@@ -69,7 +71,7 @@ const DropdownMenu = () => {
               <MenuItem key={item} onClick={handleClose}>
                 <Link
                   to={`/${
-                    item === "All Books"
+                    item === "Khám Phá"
                       ? "books"
                       : item.toLowerCase().replace(/\s+/g, "-")
                   }`}
@@ -89,6 +91,19 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const cartItems = useSelector((state) => state.cart.cartItems);
   const { currentUser, logout } = useAuth();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedPriceRange, setSelectedPriceRange] = useState("");
+  const [selectedPublisher, setSelectedPublisher] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search).get("query");
+  const {
+    data: books = [],
+    isLoading,
+    isError,
+  } = useSearchBooksQuery({ title: query });
 
   const navigation = [
     { name: "Đơn Hàng", href: "/orders" },
@@ -96,12 +111,21 @@ const Navbar = () => {
     { name: "Thanh Toán", href: "/checkout" },
   ];
 
+  const categories = ["Novel","Business", "Technology", "Fiction", "Horror", "Adventure"];
+  const priceRanges = [
+    { label: "0đ - 150.000đ", min: 0, max: 150000 },
+    { label: "150.000đ - 300.000đ", min: 150000, max: 300000 },
+    { label: "300.000đ - 500.000đ", min: 300000, max: 500000 },
+    { label: "500.000đ - 700.000đ", min: 500000, max: 700000 },
+    { label: "700.000đ - Trở Lên", min: 700000, max: Infinity },
+  ];
+
   // if (currentUser?.role === 'admin') {
   //   navigation.unshift({ name: "Dashboard", href: "/dashboard" });
   // }
   if (currentUser?.role === "admin") {
     navigation.unshift({
-      name: "Approve Books",
+      name: "Duyệt Sách",
       href: "/dashboard/approve-books",
     });
     navigation.unshift({ name: "Dashboard", href: "/dashboard" });
@@ -109,10 +133,13 @@ const Navbar = () => {
 
   if (currentUser?.role === "customer") {
     navigation.unshift({
-      name: "Manage Books",
+      name: "Quản lí sản phẩm",
       href: "/dashboard/manage-books",
     });
-    navigation.unshift({ name: "Add Book", href: "/dashboard/add-new-book" });
+    navigation.unshift({
+      name: "Thêm sản phẩm",
+      href: "/dashboard/add-new-book",
+    });
   }
 
   const handleLogOut = async () => {
@@ -134,7 +161,27 @@ const Navbar = () => {
     }
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+  
+    if (searchKeyword && searchKeyword.trim() !== "") {
+      params.append("title", searchKeyword);
+    }
+    if (selectedCategory && selectedCategory.trim() !== "") {
+      params.append("category", selectedCategory);
+    }
+    if (selectedPriceRange && selectedPriceRange.trim() !== "") {
+      const [minPrice, maxPrice] = selectedPriceRange.split("-");
+      if (minPrice && minPrice.trim() !== "") params.append("minPrice", minPrice);
+      if (maxPrice && maxPrice.trim() !== "") params.append("maxPrice", maxPrice);
+    }
+  
+    navigate(`/search?${params.toString()}`);
+  };
+
   return (
+    <>
     <header className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 text-white shadow-md sticky top-0 z-50">
       <nav className="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
@@ -160,15 +207,7 @@ const Navbar = () => {
           ))}
         </ul> */}
 
-        {/* Thanh tìm kiếm */}
-        <div className="relative flex-grow max-w-lg mx-4 rounded-lg border-2 border-yellow-400">
-          <IoSearchOutline className="absolute left-3 top-2 text-gray-500" />
-          <input
-            type="text"
-            placeholder="Tìm kiếm sản phẩm..."
-            className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-          />
-        </div>
+        
 
         {/* Phần bên phải */}
         <div className="flex items-center space-x-4">
@@ -252,6 +291,65 @@ const Navbar = () => {
         </div>
       </nav>
     </header>
+
+    {/* Thanh tìm kiếm */}
+    {location.pathname !== "/login" && location.pathname !== "/register" 
+    && location.pathname !== "/dashboard" 
+    && location.pathname !== "/dashboard/approve-books"
+    && location.pathname !== "/orders"
+    && location.pathname !== "/cart"
+    && location.pathname !== "/profile"
+    && location.pathname !== "/checkout"
+    && (
+        <div
+          className="left-0 right-0 bg-white shadow-lg"
+          style={{ zIndex: 49 }}
+        >
+        <form
+          onSubmit={handleSearch}
+          className="max-w-screen-xl mx-auto flex justify-center space-x-2 bg-green-400 p-4 rounded-lg shadow-md"
+        >
+          <input
+            type="text"
+            placeholder="Tìm kiếm theo từ khóa..."
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            className="flex-grow px-4 py-2 rounded-md border focus:outline-none"
+          />
+          <select
+            className="px-2 py-2 border rounded-md"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="">Thể loại</option>
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+          <select
+            className="px-2 py-2 border rounded-md"
+            value={selectedPriceRange}
+            onChange={(e) => setSelectedPriceRange(e.target.value)}
+          >
+            <option value="">Giá</option>
+            {priceRanges.map((range) => (
+              <option key={range.label} value={`${range.min}-${range.max}`}>
+                {range.label}
+              </option>
+            ))}
+          </select>
+          <button
+            type="submit"
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Tìm kiếm
+          </button>
+        </form>
+      </div>
+       )}
+    </>
   );
 };
 

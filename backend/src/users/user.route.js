@@ -1,7 +1,7 @@
 const express =  require('express');
 const User = require('./user.model');
 const jwt = require('jsonwebtoken');
-
+const { getUserById } = require('./user.controller');
 const router =  express.Router();
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY
@@ -37,5 +37,7 @@ router.post("/admin", async (req, res) => {
        res.status(401).send({message: "Failed to login as admin"}) 
     }
 })
+
+router.get('/:id', getUserById);
 
 module.exports = router;

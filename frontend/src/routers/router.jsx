@@ -19,6 +19,7 @@ import PrivateRoute from "./PrivateRoute";
 import OrderPage from "../pages/books/OrderPage";
 import AllBooksPage from "../pages/books/AllBooksPage";
 import ApproveBooks from '../pages/dashboard/ApproveBooks';
+import SearchResults from '../pages/SearchResults';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register/>
+      },
+      {
+        path: '/search',
+        element: <SearchResults />,
       },
       {
         path: "/cart",

@@ -34,6 +34,22 @@ const booksApi = createApi({
             query: (userId) => `/customer-books?userId=${userId}`,
             providesTags: ["Books"]
         }),
+        searchBooks: builder.query({
+            query: ({ title, category, trending, minPrice, maxPrice }) => {
+              const params = {};
+              if (title) params.title = title;
+              if (category) params.category = category;
+              if (trending !== undefined) params.trending = trending;
+              if (minPrice) params.minPrice = minPrice;
+              if (maxPrice) params.maxPrice = maxPrice;
+          
+              return {
+                url: '/search',
+                params,
+              };
+            },
+            providesTags: ['Books'],
+          }),
         addBook: builder.mutation({
             query: (newBook) => ({
                 url: `/create-book`,
@@ -73,6 +89,6 @@ const booksApi = createApi({
 
 export const {useFetchAllBooksQuery, fetchBookById, useAddBookMutation,
     useUpdateBookMutation,useDeleteBookMutation, useFetchBookByIdQuery,useApproveBookMutation, useFetchPendingBooksQuery,
-    useFetchBooksByCustomerQuery
+    useFetchBooksByCustomerQuery, useSearchBooksQuery,
 } = booksApi 
 export default booksApi
