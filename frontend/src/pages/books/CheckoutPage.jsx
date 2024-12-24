@@ -20,7 +20,7 @@ import getBaseUrl from "../../utils/baseURL";
 const CheckoutPage = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const totalPrice = cartItems
-    .reduce((acc, item) => acc + item.newPrice, 0)
+    .reduce((acc, item) => acc + item.newPrice * item.quantity, 0)
     .toFixed(2);
   const { currentUser } = useAuth();
   const {
@@ -46,6 +46,11 @@ const CheckoutPage = () => {
   const [selectedDistrictName, setSelectedDistrictName] = useState("");
   const [selectedWard, setSelectedWard] = useState("");
   const [selectedWardName, setSelectedWardName] = useState("");
+
+  const formatPrice = (price) => {
+    if (isNaN(price)) return ""; // Trả về rỗng nếu không phải là số hợp lệ
+    return Number(price).toLocaleString('vi-VN'); // Định dạng giá theo kiểu Việt Nam
+  };
 
   const handlePayment = async (newOrder) => {
     if (paymentMethod === "COD") {
@@ -418,7 +423,7 @@ const CheckoutPage = () => {
                                         <Link to="/">{product?.title}</Link>
                                       </h3>
                                       <p className="sm:ml-4">
-                                        ${product?.newPrice}
+                                      {formatPrice(product?.newPrice * product.quantity)} VNĐ
                                       </p>
                                     </div>
                                     <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 capitalize">
@@ -428,7 +433,7 @@ const CheckoutPage = () => {
                                   </div>
                                   <div className="flex flex-1 flex-wrap items-end justify-between space-y-2 text-sm">
                                     <p className="text-gray-500 dark:text-gray-400">
-                                      <strong>Sl:</strong> 1
+                                      <strong>Số lượng:</strong> {product.quantity}
                                     </p>
                                   </div>
                                 </div>
@@ -470,8 +475,9 @@ const CheckoutPage = () => {
                           </Link>{" "}
                           và{" "}
                           <Link className="underline underline-offset-2 text-blue-600 dark:text-blue-400">
-                            Điều kiện của chúng tôi.
-                          </Link>
+                            Điều kiện 
+                          </Link>{" "}
+                           của chúng tôi.
                         </label>
                       </div>
                     </div>

@@ -10,11 +10,11 @@ const cartSlice = createSlice({
         addToCart: (state,action) => {
             const existingItem = state.cartItems.find(item => item._id === action.payload._id);
             if(!existingItem){
-                state.cartItems.push(action.payload)
+                state.cartItems.push({...action.payload, quantity: 1})
                 Swal.fire({
                     positon: "top-end",
                     icon: "success",
-                    title: "Your book has been added to the cart",
+                    title: "Đã được thêm vào giỏ hàng",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -35,10 +35,17 @@ const cartSlice = createSlice({
         },
         clearCart: (state) => {
             state.cartItems = []
-        }
+        },
+        updateCartQuantity: (state, action) => {
+            const { product, quantity } = action.payload;
+            const item = state.cartItems.find(item => item._id === product._id);
+            if (item) {
+              item.quantity = quantity;
+            }
+          },
     }
 })
 
 //export actions
-export const {addToCart, removeFromCart, clearCart} = cartSlice.actions
+export const {addToCart, removeFromCart, clearCart, updateCartQuantity} = cartSlice.actions
 export default cartSlice.reducer

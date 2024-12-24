@@ -29,7 +29,7 @@ const ApproveBooks = () => {
 
   return (
     <div className="container mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Pending Books</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Sách Cần Phê Duyệt</h2>
       {pendingBooks.length === 0 ? (
         <div>No pending books found!</div>
       ) : (
@@ -37,9 +37,9 @@ const ApproveBooks = () => {
           <table className="min-w-full bg-white dark:bg-gray-800">
             <thead>
               <tr>
-                <th className="py-2 px-4 border-b">Title</th>
-                <th className="py-2 px-4 border-b">Category</th>
-                <th className="py-2 px-4 border-b">Actions</th>
+                <th className="py-2 px-4 border-b">Tên</th>
+                <th className="py-2 px-4 border-b">Thể loại</th>
+                <th className="py-2 px-4 border-b"></th>
               </tr>
             </thead>
             <tbody>
