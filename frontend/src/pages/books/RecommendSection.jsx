@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import BookCard from "./BookCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
@@ -15,7 +15,7 @@ const RecommendSection = ({ category }) => {
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching books</div>;
 
-  const filteredBooks = books.filter(book => book.category === category && book.trending)
+  const filteredBooks = books.filter(book => book.category === category && book.trending === true)
 
   return (
     <div>
@@ -42,7 +42,7 @@ const RecommendSection = ({ category }) => {
         modules={[Pagination, Navigation]}
         className="custom-swiper-pagination" 
       >
-        {books.map(book => (
+        {filteredBooks.map(book => (
           <SwiperSlide key={book._id}>
             <BookCard book={book} />
           </SwiperSlide>
