@@ -17,7 +17,7 @@ app.use(express.json());
 //     credentials: true
 // }))
 const corsOptions = {
-  origin: [process.env.FE_URL],// Update this to match your frontend URL
+  origin: process.env.FE_URL, // Update this to match your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
