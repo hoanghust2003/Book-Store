@@ -1,7 +1,7 @@
 const express =  require('express');
 const User = require('./user.model');
 const jwt = require('jsonwebtoken');
-const { getUserById } = require('./user.controller');
+const { getUserById, getAllUsers, deleteUser, updateUserRole } = require('./user.controller');
 const router =  express.Router();
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY
@@ -38,6 +38,12 @@ router.post("/admin", async (req, res) => {
     }
 })
 
+router.get('/', getAllUsers);
+
 router.get('/:id', getUserById);
+
+router.delete('/:id', deleteUser);
+
+router.put('/:id', updateUserRole);
 
 module.exports = router;
