@@ -27,7 +27,7 @@ const TopSellers = () => {
   const { data: fetchedBooks = [] } = useFetchAllBooksQuery();
 
   const filteredBooks = selectedCategory === "Chọn thể loại" ? fetchedBooks : fetchedBooks.filter(book =>
-    book.category === selectedCategory.toLowerCase()
+    book.category === selectedCategory.toLowerCase() && book.trending == true
   )
   console.log(filteredBooks)
 
