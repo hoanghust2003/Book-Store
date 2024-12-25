@@ -18,7 +18,7 @@ const RecommendSection = ({ category }) => {
   const filteredBooks = books.filter(book => book.category === category && book.trending === true)
 
   return (
-    <div>
+    <div> 
       <h2 className="text-2xl font-bold mb-6">CỬA HÀNG GIỚI THIỆU</h2>
       <Swiper
         slidesPerView={2}
