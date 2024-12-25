@@ -178,7 +178,7 @@ const SingleBook = () => {
                 <div className="font-semibold">Số trang:</div>
                 <div className="col-span-2">{book.pages || "227"}</div>
 
-                <div className="font-semibold">Hình thức:</div>
+                <div className="font-semibold">Hình thức:</div> 
                 <div className="col-span-2">{book.format || "Bìa mềm"}</div>
               </div>
             </div>
