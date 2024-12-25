@@ -18,7 +18,7 @@ const generateAuthLink = async (req, res) => {
     5. notify user to look inside email to get the login link
     **/
     const {email} = req.body
-    let user = await UserModel.findOne({email})
+    let user = await UserModel.findOne({email}) 
     if (!user){
       //if no user found -> create new user
       user = await UserModel.create({email})
