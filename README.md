@@ -2,6 +2,11 @@
 
 A web-based bookstore application that allows users to browse, search, and purchase books online.
 
+## Live Demo
+
+- Frontend: [https://cowboiz-20215378.id.vn/](https://cowboiz-20215378.id.vn/)
+- Backend API: [https://book-store-y8fk.onrender.com/](https://book-store-y8fk.onrender.com/)
+
 ## Features
 
 - User authentication and authorization
@@ -12,35 +17,47 @@ A web-based bookstore application that allows users to browse, search, and purch
 
 ## Technologies Used
 
-- Frontend: HTML, CSS, JavaScript
-- Backend: [Your backend technology]
-- Database: [Your database choice]
+- Frontend: HTML, CSS, JavaScript,React
+- Backend: Node.js, Express.js
+- Database: MongoDB
+- Deployment:
+  - Frontend: Vercel
+  - Backend: Render
 
 ## Installation
 
 1. Clone the repository
 ```bash
-git clone [your-repository-url]
+git clone https://github.com/hoanghust2003/Book-Store.git
 cd Book-Store
 ```
 
 2. Install dependencies
 ```bash
-# Add your installation commands here
+cd backend
+npm install
+
+cd..
+cd frontend
+npm install --force
 ```
 
 3. Configure environment variables
-- Create a `.env` file
-- Add necessary environment variables
+- Create `.env` and `.env.local` file
+- Add necessary environment variables like `.env.example` in backend, and `.env.local.example` in frontend.
 
 4. Start the application
 ```bash
-# Add your start command here
+cd backend
+npm start
+
+cd frontend
+npm run dev
 ```
 
 ## Usage
 
-- Visit `localhost:[port]` in your browser
+- Visit [https://cowboiz-20215378.id.vn/](https://cowboiz-20215378.id.vn/) to access the application
 - Create an account or login
 - Browse the book catalog
 - Add items to cart
